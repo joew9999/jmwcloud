@@ -1,0 +1,19 @@
+default: &default
+  adapter: <%= ENV['DATABASE_ADAPTER'] %>
+  encoding: <%= ENV['DATABASE_ENCODING'] %>
+  pool: <%= ENV['DATABASE_POOL'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+
+development:
+  <<: *default
+  database: <%= ENV['DATABASE_PRODUCTION'] %>
+
+test:
+  <<: *default
+  database: <%= ENV['DATABASE_TEST'] %>
+
+production:
+  <<: *default
+  database: <%= ENV['DATABASE_PRODUCTION'] %>
