@@ -1,6 +1,24 @@
+@import "foundation/functions"
+@import 'foundation'
+
+html, body
+  margin: 0px
+  padding: 0px
+
 body
   background-color: #F8F7F3
   font-family: Verdana, Geneva, sans-serif
 
+.row
+  max-width: 1250px
+
 h1, h2, h3, h4, h5, h6
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif
+
+p.notice, p.alert
+  margin: 0px
+  padding: 0px
+
+input[type="submit"]
+  @include button
+  padding: 8px 10px !important
