@@ -14,7 +14,8 @@
  *= require foundation_and_overrides
 
  *= require jquery-ui
+ *= require foundation
  *= require font-awesome
- *= require_tree .
+ *= require global
 
  */

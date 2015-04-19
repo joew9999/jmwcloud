@@ -11,8 +11,9 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %meta{:charset => "utf-8"}/
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
-    %title= content_for?(:title) ? yield(:title) : "AARP Weekly Wire"
-    = stylesheet_link_tag "application"
+    %title= content_for?(:title) ? yield(:title) : "Kothmann Book"
+    = stylesheet_link_tag "application", {media: 'all'}
+    = stylesheet_link_tag "devise"
     = javascript_include_tag "vendor/modernizr"
     /[if lt IE 9] <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
     /[if lt IE 9] <script src="//s3.amazonaws.com/nwapi/nwmatcher/nwmatcher-1.2.5-min.js"></script>
