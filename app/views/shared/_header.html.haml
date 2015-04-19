@@ -1,0 +1,8 @@
+#header
+  .row
+    .columns.large-3.medium-6.small-12
+      = image_tag 'logo.png'
+    .columns.large-7.show-for-large-up
+    .columns.large-2.medium-6.small-12
+      .logout
+        = link_to 'Logout', destroy_user_session_path, method: :delete

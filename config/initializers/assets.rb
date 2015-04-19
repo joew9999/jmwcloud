@@ -1,1 +1,1 @@
-Rails.application.config.assets.precompile += %w( vendor/modernizr.js devise.css)
+Rails.application.config.assets.precompile += %w( vendor/modernizr.js *.css)

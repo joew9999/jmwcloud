@@ -4,7 +4,7 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %meta{:charset => "utf-8"}/
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
-    %title= content_for?(:title) ? yield(:title) : "foundation-rails"
+    %title= content_for?(:title) ? yield(:title) : "Kothmann Book"
     = stylesheet_link_tag "application", {media: 'all'}
     = stylesheet_link_tag params[:controller]
     = javascript_include_tag "vendor/modernizr"
@@ -12,5 +12,14 @@
   %body
     %p.notice= notice
     %p.alert= alert
-    = yield
+
+    = render 'shared/header'
+
+    .main-content
+      .row
+        .columns.large-12
+          = yield
+
+    = render 'shared/footer'
+
     = javascript_include_tag "application"

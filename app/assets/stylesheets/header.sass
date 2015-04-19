@@ -1,0 +1,28 @@
+@import "foundation/functions"
+@import 'foundation'
+
+#header
+  width: 100%
+  background-color: #F8F7F3
+
+  .logout
+    text-align: right
+
+    a, a:active, a:hover
+      color: #000
+
+@media #{$large-up}
+  #header
+    height: 75px
+
+    img
+      margin-top: 23px
+
+@media #{$small-only}, #{$medium-only}
+  #header
+    height: initial
+
+    img
+      margin-top: 5px
+      height: 25px
+      margin-bottom: 10px
