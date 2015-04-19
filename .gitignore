@@ -5,5 +5,8 @@
 /log/*.log
 /tmp
 
+# Ignore simplecov test coverage output
+coverage
+
 # Ignore application configuration
 /config/application.yml
