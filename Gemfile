@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby "2.1.4"
 
 gem 'rails', '4.1.1'
+gem 'pg'
 gem 'mysql2'
 
 gem 'sass-rails', '~> 5.0.0'
@@ -53,10 +54,8 @@ group :test do
   gem 'vcr', '~> 2.4.0'
   gem 'webmock', '~> 1.11.0', :require => false
   gem 'awesome_print'
-  gem 'capybara-webkit', '~> 1.0.0'
   gem 'email_spec'
   gem 'resque_spec'
-  gem 'capybara-screenshot'
   gem 'guard-rspec', require: false
   gem 'mocha'
 end
