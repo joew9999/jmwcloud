@@ -6,5 +6,10 @@ notifications:
 before_script:
   - psql -c 'create database kothmann_test;' -U postgres
   - cp config/application.yml.travis config/application.yml
+before_install:
+  - sudo apt-get update
+  - sudo /etc/init.d/postgresql stop
+  - sudo /etc/init.d/postgresql start 9.4.1
+  - "rake db:migrate RAILS_ENV=test"
 addons:
   mysql: "9.4.1"
