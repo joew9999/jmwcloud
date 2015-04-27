@@ -10,7 +10,7 @@ before_script:
 before_install:
   - sudo apt-get update
   - sudo /etc/init.d/postgresql stop
-  - sudo /etc/init.d/postgresql start 9.4.1
+  - sudo /etc/init.d/postgresql start 9.3
   - "rake db:migrate RAILS_ENV=test"
 addons:
-  mysql: "9.4.1"
+  postgresql: "9.3"
