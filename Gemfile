@@ -27,11 +27,11 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'cancancan', '~> 1.10.1'
 gem 'rolify'
 
-gem 'capistrano', '~> 3.0.1'
-gem 'capistrano-rails', '~> 1.1.0'
-gem 'capistrano-rvm', '~> 0.1.0'
-gem 'capistrano-bundler', '>= 1.1.1'
-gem 'rvm1-capistrano3', require: false
+# gem 'capistrano', '~> 3.0.1'
+# gem 'capistrano-rails', '~> 1.1.0'
+# gem 'capistrano-rvm', '~> 0.1.0'
+# gem 'capistrano-bundler', '>= 1.1.1'
+# gem 'rvm1-capistrano3', require: false
 
 gem 'figaro'
 gem 'launchy'
