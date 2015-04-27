@@ -25,7 +25,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'devise'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'cancancan', '~> 1.10.1'
-gem 'rolify', :git => "git://github.com/EppO/rolify.git"
+gem 'rolify'
 
 gem 'capistrano', '~> 3.0.1'
 gem 'capistrano-rails', '~> 1.1.0'

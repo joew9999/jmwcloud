@@ -1,9 +1,3 @@
-GIT
-  remote: git://github.com/EppO/rolify.git
-  revision: e0061dd20bc96ffebf8e459aea0755579d4f856c
-  specs:
-    rolify (4.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -266,6 +260,7 @@ GEM
       rspec-core (>= 3.0.0)
       rspec-expectations (>= 3.0.0)
       rspec-mocks (>= 3.0.0)
+    rolify (4.0.0)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
@@ -409,7 +404,7 @@ DEPENDENCIES
   rails (= 4.1.1)
   rails_12factor
   resque_spec
-  rolify!
+  rolify
   rspec
   rspec-rails
   rvm1-capistrano3
