@@ -3,5 +3,8 @@ rvm:
   - 2.1.4
 notifications:
   email: true
+before_script:
+  - psql -c 'create database kothmann_test;' -U postgres
+  - cp config/application.yml.travis config/application.yml
 addons:
   mysql: "9.4.1"
