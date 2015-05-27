@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  root to: "books#index"
+  root to: "emails#new"
 
-  resources :books, only: [:index]
+  resources :emails, only: [:new, :create]
 end

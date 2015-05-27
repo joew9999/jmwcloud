@@ -96,6 +96,8 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
@@ -142,6 +144,8 @@ GEM
       haml (~> 4.0.0)
       nokogiri (~> 1.6.0)
       ruby_parser (~> 3.5)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     jbuilder (2.2.13)
       activesupport (>= 3.0.0, < 5)
@@ -182,6 +186,7 @@ GEM
     multi_test (0.1.2)
     mysql2 (0.3.18)
     nenv (0.2.0)
+    netrc (0.10.3)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     notiffany (0.0.6)
@@ -243,6 +248,10 @@ GEM
       rspec-core (>= 3.0.0)
       rspec-expectations (>= 3.0.0)
       rspec-mocks (>= 3.0.0)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     rolify (4.0.0)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
@@ -323,6 +332,9 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
     unicorn (4.8.3)
       kgio (~> 2.6)
       rack
@@ -376,6 +388,7 @@ DEPENDENCIES
   rails (= 4.1.1)
   rails_12factor
   resque_spec
+  rest-client
   rolify
   rspec
   rspec-rails
