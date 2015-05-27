@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mahcloud/KothmannBook.svg?branch=master)](https://travis-ci.org/mahcloud/KothmannBook)
 # Kothmann Book
 This app is dedicated to the Kothmanns of Texas. Found at www.kothmannsoftexas.org/
 
