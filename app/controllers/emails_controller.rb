@@ -3,7 +3,7 @@ class EmailsController < AuthenticatedController
   end
 
   def create
-    RestClient.post "https://api:#{ENV['MAILGUN_API_KEY']}@api.mailgun.net/v2/sandboxac47c1ce49cd452ebf12231c279ebb70.mailgun.org/messages",
+    RestClient.post "https://api:#{ENV['MAILGUN_API_KEY']}@api.mailgun.net/v2/#{ENV['MAILGUN_DOMAIN']}/messages",
       :from => "kothmannreunion@yahoo.com",
       :to => "mike.hoffert@gmail.com",
       :subject => "This is subject",
