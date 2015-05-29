@@ -1,3 +1,10 @@
 = form_tag emails_path, method: 'post' do
+  = label_tag 'Email Address'
   = text_field_tag 'email_address'
+  %br
+  = label_tag 'Content'
+  = text_area_tag :content, "", :class => "tinymce", :rows => 40, :cols => 120
+  %br
   = submit_tag 'Send Test Email'
+
+= tinymce

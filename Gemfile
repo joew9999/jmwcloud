@@ -15,6 +15,7 @@ gem 'will_paginate', '~> 3.0.6'
 gem 'compass'
 gem 'therubyracer'
 gem 'font-awesome-rails'
+gem 'tinymce-rails'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'

@@ -9,6 +9,9 @@
     = stylesheet_link_tag params[:controller]
     = javascript_include_tag "vendor/modernizr"
     = csrf_meta_tags
+    - if params[:controller] == 'emails'
+      = tinymce_assets
+      = javascript_include_tag "/assets/tinymce.js"
   %body
     %p.notice= notice
     %p.alert= alert
