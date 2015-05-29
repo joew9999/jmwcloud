@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   root to: "emails#new"
 
   resources :emails, only: [:new, :create]
+  resources :images, only: [:create]
 end

@@ -16,6 +16,8 @@ gem 'compass'
 gem 'therubyracer'
 gem 'font-awesome-rails'
 gem 'tinymce-rails'
+gem 'paperclip'
+gem 'aws-sdk'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'

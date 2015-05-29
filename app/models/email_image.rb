@@ -1,0 +1,2 @@
+class EmailImage < Image
+end
