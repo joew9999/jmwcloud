@@ -7,7 +7,7 @@ class EmailsController < AuthenticatedController
       :from => "no-reply@kothmannsoftexas.org",
       :to => params[:email_address],
       :subject => "This is subject",
-      :text => "Text body",
+      :text => params[:content],
       :html => "<b>HTML</b> version of the body!"
     flash[:notice] = "Email sent successfully!"
     redirect_to root_path
