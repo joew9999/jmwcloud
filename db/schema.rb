@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150627164340) do
+ActiveRecord::Schema.define(version: 20150627171419) do
 
   create_table "book_numbers", force: true do |t|
     t.string   "kbn"
@@ -25,13 +25,11 @@ ActiveRecord::Schema.define(version: 20150627164340) do
     t.string   "type"
     t.integer  "person_id"
     t.datetime "time"
-    t.string   "county"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "location"
   end
 
-  add_index "events", ["county"], name: "index_events_on_county", using: :btree
   add_index "events", ["location"], name: "index_events_on_location", using: :btree
   add_index "events", ["time"], name: "index_events_on_time", using: :btree
 
