@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root to: "books#index"
 
   resources :books, only: [:index]
+  resources :people, only: [:index, :create]
   resources :emails, only: [:new, :create]
   resources :images, only: [:create]
 end
