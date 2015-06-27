@@ -38,6 +38,8 @@ gem 'rolify'
 # gem 'capistrano-bundler', '>= 1.1.1'
 # gem 'rvm1-capistrano3', require: false
 
+gem 'chronic'
+
 gem 'figaro'
 gem 'launchy'
 
