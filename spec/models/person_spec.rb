@@ -19,5 +19,12 @@ describe Person do
       BookNumber.all.count.should == 100
       Person.all.first.book_numbers.count.should == 1
     end
+
+    it "should have gender data" do
+      Person::import(csv)
+      Person.male.count.should == 56
+      Person.female.count.should == 43
+      Person.no_gender.count.should == 1
+    end
   end
 end

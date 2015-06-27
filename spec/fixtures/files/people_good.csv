@@ -1,101 +1,101 @@
-KBN,KBN2,KBN3,parent_id,pm,birth_order,first_name,last_name,birth_day,birth_place,death_day,death_place
-0,,,,,0,Heinrich Conrad,Kothmann,"January 31, 1798",Wedelheine Germany,"August 27, 1881","Art, Texas"
-1,,,,1,1,Johann Heinrich Wilhelm,Kothmann,"March 1, 1825","Wedelheine, Hanover, Germany",1874,"Near San Fernando, Llano, Texas?"
-11,,,1,1,1,Henry,Kothmann,"December 11, 1855",,"July 29, 1910","in the family cemetery, San Fernando, Llano County"
-12,,,1,1,2,Fritz,Kothmann,"April 4, 1857",near Fredericksburg,"March 16, 1933",Llano County near Field Creek
-121,,,12,1,1,Delmore Ernest,Kothmann,"June 17, 1884",Field Creek Llano County,"June 28, 1885",
-122,,,12,1,2,Amy Caroline Valerie,Kothmann,"July 28, 1888","Field Creek, Llano County","November 8, 1972",Llano City Cemetery
-1221,,,122,1,1,Eugene Russell 'ER',Osbourn,"September 3, 1909",,"August 28, 2000",Llano City Cemetery
-12211,,,1221,1,1,Noyce 'Lamar',Osbourn,"September 6, 1938","San Antonio, Texas",,
-122111,,,12211,1,1,Kimberly Jean,Osbourn,"March 29, 1962","Austin, Texas",,
-122112,,,12211,1,2,Dawn Renay,Osbourn,"November 14, 1963","Llano, Texas",,
-1221121,,,122112,1,1,James Saxbury,Vance,"February 21, 1990","Glendale, Arizona",,
-12212,,,1221,1,2,Gary Lane,Osbourn,"November 1, 1942",,,
-12213,,,1221,1,3,Doyle Wayne,Osbourn,"November 1, 1942",,"November 1, 1942",
-12214,,,1221,1,4,Russell 'Terry',Osbourn,"November 18, 1949",,,
-122141,,,12214,1,1,Jeffery Wade,Osbourn,"November 28, 1978",,,
-122142,,,12214,1,2,Britt Cobert,Osbourn,"November 28, 1982",,,
-1222,,,122,1,2,Anna 'Reta',Osbourn,"June 2, 1911",,"January 10, 1972","Llano City Cemetery, Llano, Texas"
-1223,,,122,1,3,Mildred Amy,Osbourn,"October 20, 1915",,"December 21, 1981",Llano City Cemetery
-12231,,,1223,1,1,Martha Amy,Sawyer,"August 10, 1946",Llano Cemetery,"November 2, 2013",
-122311,,,12231,1,1,Richard Callen,Johnson,"October 25, 1966",Llano Cemetery,"February 9, 2005",
-122312,,,12231,1,2,Douglas Weldon,Johnson,"July 9, 1972",,,
-12232,,,1223,1,2,Royce Weldon,Sawyer,"November 24, 1949",,,
-1224,,,122,1,4,Fred S.,Osbourn,"December 28, 1923","Llano County, Texas","August 7, 1995","Valley Springs Cemetery, Llano County"
-12241,,,1224,1,1,Kenny Randolph,Osbourn,"June 21, 1949","San Antonio, Texas",,
-122411,,,12241,1,1,Amy Falon,Osbourn,"March 12, 1981",,,
-122412,,,12241,1,2,Kaleb Wells,Osbourn,"January 12, 1984","Wichita, Texas",,
-12242,,,1224,1,2,Don Lee,Osbourn,"March 30, 1953",,"January 21, 2004",Valley Springs Cemetery
-122421,,,12242,1,1,Judson Lee,Osbourn,"April 4, 1978","Ruidoso, New Mexico",,
-122422,,,12242,1,2,Christopher Dale,Osbourn,"December 2, 1973",,,
-123,,,12,1,3,Reuben Waldemar Frederick,Kothmann,"August 28, 1890","Field Creek, Llano Country","February 26, 1968","Pontotoc, Cemetery, Pontotoc, Texas "
-1231,,,123,1,1,Woodrow Wilson,Kothmann,"December 26, 1917",,"September 22, 2005",San Fernando Creek - Fritz Kothmann Cemetery
-12311,,,1231,1,1,Kenny Karl,Kothmann,"October 20, 1946","Brady, Texas ?","February 25, 1997","Family Ranch, Llano, Texas"
-123111,,,12311,1,1,Pilar Marie,Kothmann,"May 31, 1990","San Antonio, Texas",,
-123112,,,12311,1,2,Lacey Karla,Kothmann,"June 3, 1993","San Antonio, Texas",,
-12312,,,1231,1,2,Karen Kay,Kothmann,"April 19, 1951",,,
-123121,,,12312,2,1,Travis Fritz,Kothmann,"January 15, 2002",,,
-124,,,12,1,4,Reseda Edwina Elizabeth,Kothmann,"January 24, 1893","Field Creek, Llano Country","June 22, 1893",Llano County
-13,,,1,1,3,Wilhemine 'Mina',Kothmann,"September 11, 1858",,"March 29,1863",on theFamily farm near Fredericksburg
-14,,,1,1,4,Hanna,Kothmann,"July 1, 1860",,date unavailable,"at the family farm near Fredericksburg, Texas"
-15,,,1,1,5,Ernest,Kothmann,"October 15, 1861",,date unavailable,"at the family farm near Fredericksburg, Texas"
-16,,,1,1,6,John W.,Kothmann,"September 16, 1863","near Fredericksburg, Texas","June 21, 1942","San Fernando Cemetery, San Antonio, Texas"
-161,,,16,1,1,Emilie Johanna,Kothmann,"July 30, 1888","Kerrville, Texas","October 6, 1983","San Fernando Cemetery #3, San Antonio, Texas"
-1611,,,161,1,1,Lillian Mae,Laechelin,"May 22, 1909",,"February 6, 1992","San Fernando Cemetery #3 San Antonio, TX."
-16111,,,1611,1,1,Geraldine,Davenport,"July 29, 1930",,,
-161111,,,16111,1,1,August Richard,Whitley,"October 24, 1951",,,
-161112,,,16111,1,2,David Monroe,Whitley,"December 14, 1955",,,
-1611121,,,161112,1,1,Daniel Lee,Whitley,"December 28, 1981",,,
-161113,,,16111,1,3,Diane Lorraine,Whitley,"September 26, 1958",,,
-1611131,,,161113,1,1,Lauren Ashley,Ayres,"May 3, 1990","San Marcos, Texas",,
-1611132,,,161113,1,2,Rachel Rene,Ayres,"January 16, 1993","San Marcos, Texas",,
-16112,,,1611,1,2,Patricia Mae,Davenport,"March 17, 1933","San Antonio, Texas",,
-161121,,,16112,1,1,Wayne Arlyn,Stroman,"August 24, 1954","Palm Beach , Florida",,
-161122,,,16112,1,2,Terri Renei,Stroman,"October 1, 1957","Houston, Texas",,
-1611221,,,161122,1,1,Bryan James,Moore,"May 30, 1981","Houston, Texas",,
-1611222,,,161122,1,2,Jason Stephen,Moore,"July 13, 1982","Houston, Texas",,
-1611223,,,161122,1,3,Heather Renei,Moore,"May 9, 1990","Houston, Texas",,
-16113,,,1611,1,3,Jayne Aubrey,Davenport,"February 8, 1943",,,
-161131,,,16113,1,1,Michelle Elizabeth,Mecke,"February 13, 1966",,,
-1611311,,,161131,1,1,Jessica Lynn,Swaim,"March 20, 1990",,,
-1611312,,,161131,1,2,Lillian Nicole,Swaim,"April 13, 1993",,,
-161132,,,16113,2,2,Cecil Frankin 'Trey',James,"October 28, 1974",,,
-1612,,,161,1,2,Evelyn 'Pearl',Laechelin,"January 18, 1911","San Antonio, Texas","January 25, 1988","Lawnhaven Memorial Garden, San Angelo, Texas"
-16121,,,1612,1,1,Evelyn Lavonne,Bell,"February 9, 1936","San Antonio, Texas",,
-161211,,,16121,1,1,Jody Lee,Johnson,"February 14, 1958",,,
-1612111,,,161211,1,1,Cole Steven,Johnson,"August 20, 1994",,,
-161212,,,16121,1,2,Jeffrey Floyd,Johnson,"April 8, 1960",,,
-1612121,,,161212,1,1,Nicole Brooke,Johnson,"November 16, 1999",,,
-161213,,,16121,1,3,Joel Carol,Johnson,"July 17, 1961",,,
-1612131,,,161213,1,1,Adam Thomas,Johnson,"March 9, 1990",,,
-1612132,,,161213,1,2,Amanda Christine,Johnson,"April 9, 1994",,,
-16122,,,1612,1,2,Alfred Floyd 'Sonny',Bell,"January 11, 1940","San Angelo, Texas","May 15, 2002","Long Beach, California"
-1613,,,161,1,3,Dalton Frank,Laechelin,"December 28, 1912",,"February 14, 1961","San Fernando Cemetery #3, San Antonio, Texas"
-16131,,,1613,1,1,Dalton Frank,Neill,"March 29, 1933","San Antonio, Texas",,
-16132,,,1613,2,2,Sharon Frances,Laechelin,"September 10, 1938",,,
-16133,,,1613,2,3,Karon Roberta,Laechelin,"February 28, 1943",,"April 27, 1994",
-161331,,,16133,1,1,Edwin Donnell,Schafer,"February 4, 1960",,,
-1613311,,,161331,1,1,Lauren Michelle,Schafer,"September 23, 1983",,,
-1613312,,,161331,1,2,Andrea Reneé,Schafer,"August 26, 1985",,,
-161332,,,16133,1,2,Terri Marlene,Schafer,"July 21, 1961",,,
-1613321,,,161332,1,1,Andrew Blake 'Drew',Chapa,"September 3, 1989",,,
-1613322,,,161332,1,2,Karon Corinne,Chapa,"February 28, 1996",,,
-161333,,,16133,2,3,Michael Todd,Wachsmann,"June 26, 1968",,,
-1613331,,,161333,1,1,Michael Beau,Wachsmann,"June 2, 2000",,,
-16134,,,1613,2,4,Helen Beth,Laechelin,"September 12, 1944",,,
-161341,,,16134,1,1,Shannon Leigh,Owen,"January 1, 1967",,,
-1613411,,,161341,1,1,Michael Jacob,McClellan,"October 11, 1992",,,
-1613412,,,161341,1,2,Joshua Hunter,McClellan,"November 17, 1996",,,
-1613413,,,161341,1,3,Marshall Cole,McClellan,"October 3, 2000",,,
-161342,,,16134,1,2,Christi Lyn,Owen,"February 26, 1969",,,
-1613421,,,161342,1,1,Madelyn Frances,Esquivel,"August 4, 1996",,,
-1613422,,,161342,1,2,Nathan Samuel,Esquivel,"May 23, 2000",,,
-1613423,,,161342,1,3,Benjamin Luke,Esquivel,"December 26, 2004",,,
-161343,,,16134,1,3,Frank Shirley 'Trey',Owen,"April 15, 1972",,,
-1613431,,,161343,1,1,Ava Beth,Owen,"March 20, 2006",,,
-1613432,,,161343,1,2,Brady Walker,Owen,"June 6, 2007",,,
-1614,,,161,1,4,Robert John,Laechelin,"November 22, 1914","San Antonio, Texas","February 25, 1982","Ft. Sam Houston Cemetery, San Antonio,TX"
-16141,,,1614,1,1,Celeste,Laechelin,"October 25, 1939","San Antonio, Texas",,
-16142,,,1614,2,2,Elizabeth Johanna,Laechelin,"September 11, 1945",,"February 29, 2008","Ft. Sam Houston National Cemetery, San Antonio, Tx"
-161421,,,16142,1,1,Jeffrey Alan,Smith,"March 23, 1975",,,
-161422,,,16142,1,2,Ryan Anthony,Smith,"February 21, 1980",,,
+KBN,KBN2,KBN3,gender,first_name,last_name,sufix,birth_day,birth_place,death_day,death_place
+0,,,M,Heinrich Conrad,Kothmann,,"January 31, 1798",Wedelheine Germany,"August 27, 1881","Art, Texas"
+1,,,M,Johann Heinrich Wilhelm,Kothmann,,"March 1, 1825","Wedelheine, Hanover, Germany",1874,"Near San Fernando, Llano, Texas?"
+11,,,M,Henry,Kothmann,,"December 11, 1855",,"July 29, 1910","in the family cemetery, San Fernando, Llano County"
+12,,,M,Fritz,Kothmann,,"April 4, 1857",near Fredericksburg,"March 16, 1933",Llano County near Field Creek
+121,,,M,Delmore Ernest,Kothmann,,"June 17, 1884",Field Creek Llano County,"June 28, 1885",
+122,,,F,Amy Caroline Valerie,Kothmann,,"July 28, 1888","Field Creek, Llano County","November 8, 1972",Llano City Cemetery
+1221,,,M,Eugene Russell 'ER',Osbourn,,"September 3, 1909",,"August 28, 2000",Llano City Cemetery
+12211,,,M,Noyce 'Lamar',Osbourn,,"September 6, 1938","San Antonio, Texas",,
+122111,,,F,Kimberly Jean,Osbourn,,"March 29, 1962","Austin, Texas",,
+122112,,,F,Dawn Renay,Osbourn,,"November 14, 1963","Llano, Texas",,
+1221121,,,M,James Saxbury,Vance,,"February 21, 1990","Glendale, Arizona",,
+12212,,,M,Gary Lane,Osbourn,,"November 1, 1942",,,
+12213,,,M,Doyle Wayne,Osbourn,,"November 1, 1942",,"November 1, 1942",
+12214,,,M,Russell 'Terry',Osbourn,,"November 18, 1949",,,
+122141,,,M,Jeffery Wade,Osbourn,,"November 28, 1978",,,
+122142,,,M,Britt Cobert,Osbourn,,"November 28, 1982",,,
+1222,,,F,Anna 'Reta',Osbourn,,"June 2, 1911",,"January 10, 1972","Llano City Cemetery, Llano, Texas"
+1223,,,F,Mildred Amy,Osbourn,,"October 20, 1915",,"December 21, 1981",Llano City Cemetery
+12231,,,F,Martha Amy,Sawyer,,"August 10, 1946",Llano Cemetery,"November 2, 2013",
+122311,,,M,Richard Callen,Johnson,,"October 25, 1966",Llano Cemetery,"February 9, 2005",
+122312,,,M,Douglas Weldon,Johnson,,"July 9, 1972",,,
+12232,,,M,Royce Weldon,Sawyer,,"November 24, 1949",,,
+1224,,,M,Fred S.,Osbourn,,"December 28, 1923","Llano County, Texas","August 7, 1995","Valley Springs Cemetery, Llano County"
+12241,,,M,Kenny Randolph,Osbourn,,"June 21, 1949","San Antonio, Texas",,
+122411,,,F,Amy Falon,Osbourn,,"March 12, 1981",,,
+122412,,,M,Kaleb Wells,Osbourn,,"January 12, 1984","Wichita, Texas",,
+12242,,,M,Don Lee,Osbourn,,"March 30, 1953",,"January 21, 2004",Valley Springs Cemetery
+122421,,,M,Judson Lee,Osbourn,,"April 4, 1978","Ruidoso, New Mexico",,
+122422,,,M,Christopher Dale,Osbourn,,"December 2, 1973",,,
+123,,,M,Reuben Waldemar Frederick,Kothmann,,"August 28, 1890","Field Creek, Llano Country","February 26, 1968","Pontotoc, Cemetery, Pontotoc, Texas "
+1231,,,M,Woodrow Wilson,Kothmann,,"December 26, 1917",,"September 22, 2005",San Fernando Creek - Fritz Kothmann Cemetery
+12311,,,M,Kenny Karl,Kothmann,,"October 20, 1946","Brady, Texas ?","February 25, 1997","Family Ranch, Llano, Texas"
+123111,,,F,Pilar Marie,Kothmann,,"May 31, 1990","San Antonio, Texas",,
+123112,,,F,Lacey Karla,Kothmann,,"June 3, 1993","San Antonio, Texas",,
+12312,,,F,Karen Kay,Kothmann,,"April 19, 1951",,,
+123121,,,M,Travis Fritz,Kothmann,,"January 15, 2002",,,
+124,,,F,Reseda Edwina Elizabeth,Kothmann,,"January 24, 1893","Field Creek, Llano Country","June 22, 1893",Llano County
+13,,,F,Wilhemine 'Mina',Kothmann,,"September 11, 1858",,"March 29,1863",on theFamily farm near Fredericksburg
+14,,,F,Hanna,Kothmann,,"July 1, 1860",,date unavailable,"at the family farm near Fredericksburg, Texas"
+15,,,M,Ernest,Kothmann,,"October 15, 1861",,date unavailable,"at the family farm near Fredericksburg, Texas"
+16,,,M,John W.,Kothmann,,"September 16, 1863","near Fredericksburg, Texas","June 21, 1942","San Fernando Cemetery, San Antonio, Texas"
+161,,,F,Emilie Johanna,Kothmann,,"July 30, 1888","Kerrville, Texas","October 6, 1983","San Fernando Cemetery #3, San Antonio, Texas"
+1611,,,F,Lillian Mae,Laechelin,,"May 22, 1909",,"February 6, 1992","San Fernando Cemetery #3 San Antonio, TX."
+16111,,,F,Geraldine,Davenport,,"July 29, 1930",,,
+161111,,,M,August Richard,Whitley,0,"October 24, 1951",,,
+161112,,,M,David Monroe,Whitley,,"December 14, 1955",,,
+1611121,,,M,Daniel Lee,Whitley,,"December 28, 1981",,,
+161113,,,F,Diane Lorraine,Whitley,,"September 26, 1958",,,
+1611131,,,F,Lauren Ashley,Ayres,,"May 3, 1990","San Marcos, Texas",,
+1611132,,,F,Rachel Rene,Ayres,,"January 16, 1993","San Marcos, Texas",,
+16112,,,F,Patricia Mae,Davenport,,"March 17, 1933","San Antonio, Texas",,
+161121,,,M,Wayne Arlyn,Stroman,,"August 24, 1954","Palm Beach , Florida",,
+161122,,,F,Terri Renei,Stroman,,"October 1, 1957","Houston, Texas",,
+1611221,,,M,Bryan James,Moore,,"May 30, 1981","Houston, Texas",,
+1611222,,,M,Jason Stephen,Moore,,"July 13, 1982","Houston, Texas",,
+1611223,,,F,Heather Renei,Moore,,"May 9, 1990","Houston, Texas",,
+16113,,,F,Jayne Aubrey,Davenport,,"February 8, 1943",,,
+161131,,,F,Michelle Elizabeth,Mecke,,"February 13, 1966",,,
+1611311,,,F,Jessica Lynn,Swaim,,"March 20, 1990",,,
+1611312,,,F,Lillian Nicole,Swaim,,"April 13, 1993",,,
+161132,,,M,Cecil Frankin 'Trey',James,0,"October 28, 1974",,,
+1612,,,F,Evelyn 'Pearl',Laechelin,,"January 18, 1911","San Antonio, Texas","January 25, 1988","Lawnhaven Memorial Garden, San Angelo, Texas"
+16121,,,F,Evelyn Lavonne,Bell,,"February 9, 1936","San Antonio, Texas",,
+161211,,,M,Jody Lee,Johnson,,"February 14, 1958",,,
+1612111,,,M,Cole Steven,Johnson,,"August 20, 1994",,,
+161212,,,M,Jeffrey Floyd,Johnson,,"April 8, 1960",,,
+1612121,,,F,Nicole Brooke,Johnson,,"November 16, 1999",,,
+161213,,,M,Joel Carol,Johnson,,"July 17, 1961",,,
+1612131,,,M,Adam Thomas,Johnson,,"March 9, 1990",,,
+1612132,,,F,Amanda Christine,Johnson,,"April 9, 1994",,,
+16122,,,M,Alfred Floyd 'Sonny',Bell,0,"January 11, 1940","San Angelo, Texas","May 15, 2002","Long Beach, California"
+1613,,,M,Dalton Frank,Laechelin,0,"December 28, 1912",,"February 14, 1961","San Fernando Cemetery #3, San Antonio, Texas"
+16131,,,M,Dalton Frank,Neill,0,"March 29, 1933","San Antonio, Texas",,
+16132,,,F,Sharon Frances,Laechelin,,"September 10, 1938",,,
+16133,,,F,Karon Roberta,Laechelin,,"February 28, 1943",,"April 27, 1994",
+161331,,,M,Edwin Donnell,Schafer,0,"February 4, 1960",,,
+1613311,,,F,Lauren Michelle,Schafer,,"September 23, 1983",,,
+1613312,,,F,Andrea Reneé,Schafer,,"August 26, 1985",,,
+161332,,,F,Terri Marlene,Schafer,,"July 21, 1961",,,
+1613321,,,M,Andrew Blake 'Drew',Chapa,,"September 3, 1989",,,
+1613322,,,F,Karon Corinne,Chapa,,"February 28, 1996",,,
+161333,,,M,Michael Todd,Wachsmann,,"June 26, 1968",,,
+1613331,,,M,Michael Beau,Wachsmann,,"June 2, 2000",,,
+16134,,,F,Helen Beth,Laechelin,,"September 12, 1944",,,
+161341,,,F,Shannon Leigh,Owen,,"January 1, 1967",,,
+1613411,,,M,Michael Jacob,McClellan,,"October 11, 1992",,,
+1613412,,,M,Joshua Hunter,McClellan,,"November 17, 1996",,,
+1613413,,,M,Marshall Cole,McClellan,,"October 3, 2000",,,
+161342,,,F,Christi Lyn,Owen,,"February 26, 1969",,,
+1613421,,,F,Madelyn Frances,Esquivel,,"August 4, 1996",,,
+1613422,,,M,Nathan Samuel,Esquivel,,"May 23, 2000",,,
+1613423,,,M,Benjamin Luke,Esquivel,,"December 26, 2004",,,
+161343,,,M,Frank Shirley 'Trey',Owen,0,"April 15, 1972",,,
+1613431,,,F,Ava Beth,Owen,,"March 20, 2006",,,
+1613432,,,M,Brady Walker,Owen,,"June 6, 2007",,,
+1614,,,M,Robert John,Laechelin,0,"November 22, 1914","San Antonio, Texas","February 25, 1982","Ft. Sam Houston Cemetery, San Antonio,TX"
+16141,,,F,Celeste,Laechelin,,"October 25, 1939","San Antonio, Texas",,
+16142,,,F,Elizabeth Johanna,Laechelin,,"September 11, 1945",,"February 29, 2008","Ft. Sam Houston National Cemetery, San Antonio, Tx"
+161421,,,M,Jeffrey Alan,Smith,,"March 23, 1975",,,
+161422,,,,Ryan Anthony,Smith,,"February 21, 1980",,,

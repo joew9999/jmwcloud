@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150627150141) do
+ActiveRecord::Schema.define(version: 20150627162340) do
 
   create_table "book_numbers", force: true do |t|
     t.string   "kbn"
@@ -58,10 +58,13 @@ ActiveRecord::Schema.define(version: 20150627150141) do
     t.integer  "death_place_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "male",           default: false
+    t.string   "suffix"
   end
 
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
   add_index "people", ["last_name"], name: "index_people_on_last_name", using: :btree
+  add_index "people", ["male"], name: "index_people_on_male", using: :btree
 
   create_table "people_book_numbers", force: true do |t|
     t.integer  "book_number_id"
