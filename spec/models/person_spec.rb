@@ -10,8 +10,14 @@ describe Person do
     let(:csv) { CSV.parse(csv_text, :headers => true) }
 
     it "should make people" do
-      people = Person::import(csv)
+      Person::import(csv)
       Person.all.count.should == 100
+    end
+
+    it "should only create one kbn number per person" do
+      Person::import(csv)
+      BookNumber.all.count.should == 100
+      Person.all.first.book_numbers.count.should == 1
     end
   end
 end
