@@ -13,6 +13,24 @@
 
 ActiveRecord::Schema.define(version: 20150529143328) do
 
+  create_table "events", force: true do |t|
+    t.string   "type"
+    t.integer  "person_id"
+    t.datetime "time"
+    t.string   "city"
+    t.string   "county"
+    t.string   "state"
+    t.string   "country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events", ["city"], name: "index_events_on_city", using: :btree
+  add_index "events", ["country"], name: "index_events_on_country", using: :btree
+  add_index "events", ["county"], name: "index_events_on_county", using: :btree
+  add_index "events", ["state"], name: "index_events_on_state", using: :btree
+  add_index "events", ["time"], name: "index_events_on_time", using: :btree
+
   create_table "images", force: true do |t|
     t.string   "type"
     t.string   "image_file_name"
@@ -22,6 +40,20 @@ ActiveRecord::Schema.define(version: 20150529143328) do
   end
 
   add_index "images", ["type"], name: "index_images_on_type", using: :btree
+
+  create_table "people", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "birth_date"
+    t.integer  "birth_place_id"
+    t.datetime "death_date"
+    t.integer  "death_place_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
+  add_index "people", ["last_name"], name: "index_people_on_last_name", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -36,9 +68,11 @@ ActiveRecord::Schema.define(version: 20150529143328) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "person_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["person_id"], name: "index_users_on_person_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
