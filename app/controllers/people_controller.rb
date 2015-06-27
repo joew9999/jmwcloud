@@ -2,7 +2,9 @@ class PeopleController < AuthenticatedController
   NO_FILE = "Please select a file to upload!"
 
   def index
-    @people = Person.all.paginate(page: 1, per_page: 25)
+    @page = params[:page].to_i
+    @page = 1 if @page < 1 || @page.blank?
+    @people = Person.all.paginate(page: @page, per_page: 25)
   end
 
   def create
