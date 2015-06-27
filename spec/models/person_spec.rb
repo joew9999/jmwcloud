@@ -11,7 +11,7 @@ describe Person do
 
     it "should make people" do
       people = Person::import(csv)
-      Person.all.count.should == 4281
+      Person.all.count.should == 100
     end
   end
 end
