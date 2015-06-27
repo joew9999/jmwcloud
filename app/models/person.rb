@@ -1,5 +1,7 @@
 class Person < ActiveRecord::Base
   has_one :user
+  has_many :people_book_numbers
+  has_many :book_numbers, through: :people_book_numbers
 
   def self.import(csv)
     people = []

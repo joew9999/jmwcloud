@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150529143328) do
+ActiveRecord::Schema.define(version: 20150627150141) do
+
+  create_table "book_numbers", force: true do |t|
+    t.string   "kbn"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "book_numbers", ["kbn"], name: "index_book_numbers_on_kbn", using: :btree
 
   create_table "events", force: true do |t|
     t.string   "type"
@@ -54,6 +62,16 @@ ActiveRecord::Schema.define(version: 20150529143328) do
 
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
   add_index "people", ["last_name"], name: "index_people_on_last_name", using: :btree
+
+  create_table "people_book_numbers", force: true do |t|
+    t.integer  "book_number_id"
+    t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "people_book_numbers", ["book_number_id"], name: "index_people_book_numbers_on_book_number_id", using: :btree
+  add_index "people_book_numbers", ["person_id"], name: "index_people_book_numbers_on_person_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
