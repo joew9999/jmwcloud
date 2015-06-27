@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150627171419) do
+ActiveRecord::Schema.define(version: 20150627174514) do
 
   create_table "book_numbers", force: true do |t|
     t.string   "kbn"
@@ -21,9 +21,18 @@ ActiveRecord::Schema.define(version: 20150627171419) do
 
   add_index "book_numbers", ["kbn"], name: "index_book_numbers_on_kbn", using: :btree
 
+  create_table "event_people", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_people", ["event_id"], name: "index_event_people_on_event_id", using: :btree
+  add_index "event_people", ["person_id"], name: "index_event_people_on_person_id", using: :btree
+
   create_table "events", force: true do |t|
     t.string   "type"
-    t.integer  "person_id"
     t.datetime "time"
     t.datetime "created_at"
     t.datetime "updated_at"

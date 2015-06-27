@@ -2,18 +2,23 @@ class Person < ActiveRecord::Base
   has_one :user
   has_many :people_book_numbers
   has_many :book_numbers, through: :people_book_numbers
-  has_many :events
+  has_many :event_people
+  has_many :events, through: :event_people
 
   scope :no_gender, -> { where(male: nil) }
   scope :male, -> { where(male: true) }
   scope :female, -> { where(male: false) }
 
   def birth
-    self.events.where(type: 'Birth').first_or_create
+    birth = self.events.where(type: 'Birth').first_or_create
+    EventPerson.create({event_id: birth.id, person_id: self.id}) unless birth.people.include?(self)
+    birth
   end
 
   def death
-    self.events.where(type: 'Death').first_or_create
+    death = self.events.where(type: 'Death').first_or_create
+    EventPerson.create({event_id: death.id, person_id: self.id}) unless death.people.include?(self)
+    death
   end
 
   def self.import(csv)

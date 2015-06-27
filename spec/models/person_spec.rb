@@ -4,13 +4,15 @@ describe Person do
   it { should have_one(:user) }
   it { should have_many(:people_book_numbers) }
   it { should have_many(:book_numbers).through(:people_book_numbers) }
-  it { should have_many(:events) }
+  it { should have_many(:event_people) }
+  it { should have_many(:events).through(:event_people) }
 
   describe 'birth' do
     let!(:person) { Fabricate(:person) }
 
     context "has birth event" do
-      let!(:birth) { Fabricate(:event, type: 'Birth', person_id: person.id) }
+      let!(:birth) { Fabricate(:event, type: 'Birth') }
+      let!(:birth_person) { Fabricate(:event_person, person_id: person.id, event_id: birth.id) }
 
       it "should return that birth event" do
         person.birth.should == birth
@@ -19,7 +21,7 @@ describe Person do
 
     context "no birth event" do
       it "should return a new birth event" do
-        person.birth.person_id.should == person.id
+        person.birth.people.first.id.should == person.id
         person.birth.type.should == 'Birth'
         person.birth.location.should be_nil
         person.birth.time.should be_nil
@@ -31,7 +33,8 @@ describe Person do
     let!(:person) { Fabricate(:person) }
 
     context "has death event" do
-      let!(:death) { Fabricate(:event, type: 'Death', person_id: person.id) }
+      let!(:death) { Fabricate(:event, type: 'Death') }
+      let!(:death_person) { Fabricate(:event_person, person_id: person.id, event_id: death.id) }
 
       it "should return that death event" do
         person.death.should == death
@@ -40,7 +43,7 @@ describe Person do
 
     context "no death event" do
       it "should return a new death event" do
-        person.death.person_id.should == person.id
+        person.death.people.first.id.should == person.id
         person.death.type.should == 'Death'
         person.death.location.should be_nil
         person.death.time.should be_nil
