@@ -4,6 +4,8 @@ class Person < ActiveRecord::Base
   has_many :book_numbers, through: :people_book_numbers
   has_many :event_people
   has_many :events, through: :event_people
+  has_many :relationship_people
+  has_many :relationships, through: :relationship_people
 
   scope :no_gender, -> { where(male: nil) }
   scope :male, -> { where(male: true) }

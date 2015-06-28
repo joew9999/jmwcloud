@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150627174514) do
+ActiveRecord::Schema.define(version: 20150628222640) do
 
   create_table "book_numbers", force: true do |t|
     t.string   "kbn"
@@ -78,6 +78,35 @@ ActiveRecord::Schema.define(version: 20150627174514) do
 
   add_index "people_book_numbers", ["book_number_id"], name: "index_people_book_numbers_on_book_number_id", using: :btree
   add_index "people_book_numbers", ["person_id"], name: "index_people_book_numbers_on_person_id", using: :btree
+
+  create_table "relationship_events", force: true do |t|
+    t.integer  "relationship_id"
+    t.integer  "event_id"
+    t.integer  "order"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationship_events", ["event_id"], name: "index_relationship_events_on_event_id", using: :btree
+  add_index "relationship_events", ["order"], name: "index_relationship_events_on_order", using: :btree
+  add_index "relationship_events", ["relationship_id"], name: "index_relationship_events_on_relationship_id", using: :btree
+
+  create_table "relationship_people", force: true do |t|
+    t.integer  "relationship_id"
+    t.integer  "person_id"
+    t.integer  "order"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationship_people", ["order"], name: "index_relationship_people_on_order", using: :btree
+  add_index "relationship_people", ["person_id"], name: "index_relationship_people_on_person_id", using: :btree
+  add_index "relationship_people", ["relationship_id"], name: "index_relationship_people_on_relationship_id", using: :btree
+
+  create_table "relationships", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
