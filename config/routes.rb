@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :books, only: [:index]
   resources :people, only: [:index, :create]
+  resources :relationships, only: [:index, :create]
   resources :emails, only: [:new, :create]
   resources :images, only: [:create]
 end

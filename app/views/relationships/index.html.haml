@@ -1,0 +1,18 @@
+%h3 Mass import
+= form_tag(relationships_path, method: 'post', multipart: true) do
+  = label_tag 'Select CSV'
+  = file_field_tag 'file', :accept => "text/csv"
+  = hidden_field_tag :import, 'import'
+  = submit_tag 'Import', class: 'button'
+
+= will_paginate @relationships
+%table
+  %thead
+    %tr
+      %th Person
+      %th Spouse
+    - @relationships.each do |relationship|
+      %tr
+        %td= relationship.people.first.name
+        %td= relationship.people.last.name
+= will_paginate @relationships

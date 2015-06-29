@@ -1,0 +1,2 @@
+class Marriage < Event
+end

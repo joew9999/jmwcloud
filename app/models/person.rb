@@ -11,6 +11,14 @@ class Person < ActiveRecord::Base
   scope :male, -> { where(male: true) }
   scope :female, -> { where(male: false) }
 
+  def name
+    "#{self.first_name} #{self.last_name}"
+  end
+
+  def self.find_by_kbn(kbn)
+    BookNumber.where(kbn: kbn).first.people.first rescue nil
+  end
+
   def birth
     birth = self.events.where(type: 'Birth').first_or_create
     EventPerson.create({event_id: birth.id, person_id: self.id}) unless birth.people.include?(self)
