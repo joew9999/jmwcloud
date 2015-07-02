@@ -41,6 +41,7 @@ gem 'rolify'
 # gem 'rvm1-capistrano3', require: false
 
 gem 'chronic'
+gem 'ordinalize'
 
 gem 'figaro'
 gem 'launchy'

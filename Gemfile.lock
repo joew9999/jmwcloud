@@ -159,6 +159,7 @@ GEM
       ruby_parser (~> 3.5)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
+    humanize (1.1.0)
     i18n (0.7.0)
     jbuilder (2.2.13)
       activesupport (>= 3.0.0, < 5)
@@ -207,6 +208,8 @@ GEM
     notiffany (0.0.6)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    ordinalize (0.0.3)
+      humanize
     orm_adapter (0.5.0)
     paperclip (4.2.1)
       activemodel (>= 3.0.0)
@@ -413,6 +416,7 @@ DEPENDENCIES
   meta_request
   mocha
   mysql2
+  ordinalize
   paperclip
   pg
   prawn
