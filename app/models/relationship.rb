@@ -21,7 +21,7 @@ class Relationship < ActiveRecord::Base
       RelationshipPartner.create({relationship_id: relationship.id, person_id: person.id, order: row['order']})
       RelationshipPartner.create({relationship_id: relationship.id, person_id: partner.id, order: partner.relationships.count + 1})
       if !row['married'].blank? && !row['marriage_day'].blank?
-        event = Marriage.create({time: Chronic.parse(row['marriage_day'])})
+        event = Marriage.create({time: row['marriage_day']})
         RelationshipEvent.create({relationship_id: relationship.id, event_id: event.id, order: 1})
       end
     end

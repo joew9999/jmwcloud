@@ -101,8 +101,8 @@ class Person < ActiveRecord::Base
     if person.nil?
       person = Person.create({first_name: row['first_name'], last_name: row['last_name'], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false)})
       person.import_kbn(row)
-      person.birth.update_attributes({time: Chronic.parse(row['birth_day']), location: row['birth_place']})
-      person.death.update_attributes({time: Chronic.parse(row['death_day']), location: row['death_place']})
+      person.birth.update_attributes({time: row['birth_day'], location: row['birth_place']})
+      person.death.update_attributes({time: row['death_day'], location: row['death_place']})
     elsif !row['relationship_number'].blank?
       parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
       if !parent.nil?

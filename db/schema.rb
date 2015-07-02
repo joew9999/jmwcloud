@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150629002247) do
+ActiveRecord::Schema.define(version: 20150702153308) do
 
   create_table "book_numbers", force: true do |t|
     t.string   "kbn"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20150629002247) do
 
   create_table "events", force: true do |t|
     t.string   "type"
-    t.datetime "time"
+    t.string   "time"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "location"
