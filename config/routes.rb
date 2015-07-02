@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   root to: "books#index"
 
-  resources :books, only: [:index]
+  resources :books, only: [:index, :create]
   resources :people, only: [:index, :create]
   resources :relationships, only: [:index, :create]
   resources :emails, only: [:new, :create]

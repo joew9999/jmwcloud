@@ -18,8 +18,8 @@ class Relationship < ActiveRecord::Base
     partner = Person.where(first_name: row['first_name']).where(last_name: row['last_name']).first_or_create
     if !person.nil? && !partner.nil?
       relationship = Relationship.create
-      RelationshipPerson.create({relationship_id: relationship.id, person_id: person.id, order: row['order']})
-      RelationshipPerson.create({relationship_id: relationship.id, person_id: partner.id, order: partner.relationships.count + 1})
+      RelationshipPartner.create({relationship_id: relationship.id, person_id: person.id, order: row['order']})
+      RelationshipPartner.create({relationship_id: relationship.id, person_id: partner.id, order: partner.relationships.count + 1})
       if !row['married'].blank? && !row['marriage_day'].blank?
         event = Marriage.create({time: Chronic.parse(row['marriage_day'])})
         RelationshipEvent.create({relationship_id: relationship.id, event_id: event.id, order: 1})

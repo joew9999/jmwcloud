@@ -31,6 +31,63 @@ class Person < ActiveRecord::Base
     death
   end
 
+  def parents
+    parents = []
+    self.relationship_people.where(type: 'RelationshipChild').each do |child_relationship|
+      child_relationship.relationship.relationship_people.where(type: 'RelationshipPartner').each do |partner_relationship|
+        parents << partner_relationship.person
+      end
+    end
+    parents
+  end
+
+  def partners
+    partners = []
+    self.relationship_people.where(type: 'RelationshipPartner').each do |relationship|
+      relationship.relationship.relationship_people.where(type: 'RelationshipPartner').each do |partner_relationship|
+        partners << partner_relationship.person if partner_relationship.person_id != self.id
+      end
+    end
+    partners
+  end
+
+  def children
+    children = []
+    self.relationship_people.where(type: 'RelationshipPartner').each do |relationship|
+      relationship.relationship.relationship_people.where(type: 'RelationshipChild').each do |child_relationship|
+        children << child_relationship.person
+      end
+    end
+    children
+  end
+
+  def grandchildren
+    count = 0
+    self.children.each do |child|
+      count = count + child.children.count
+    end
+    count
+  end
+
+  def greatgrandchildren(count, generation)
+    self.children.each do |child|
+      if generation == 0
+        count = count + child.children.count
+      else
+        count = child.greatgrandchildren(count, generation - 1)
+      end
+    end
+    count
+  end
+
+  def descendents
+    count = 0
+    self.children.each do |child|
+      count = count + 1 + child.children.count
+    end
+    count
+  end
+
   def self.import(csv)
     people = []
     csv.each do |row|
@@ -40,10 +97,21 @@ class Person < ActiveRecord::Base
   end
 
   def self.import_row(row)
-    person = Person.create({first_name: row['first_name'], last_name: row['last_name'], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false)})
-    person.import_kbn(row)
-    person.birth.update_attributes({time: Chronic.parse(row['birth_day']), location: row['birth_place']})
-    person.death.update_attributes({time: Chronic.parse(row['death_day']), location: row['death_place']})
+    person = Person.find_by_kbn(row['KBN'])
+    if person.nil?
+      person = Person.create({first_name: row['first_name'], last_name: row['last_name'], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false)})
+      person.import_kbn(row)
+      person.birth.update_attributes({time: Chronic.parse(row['birth_day']), location: row['birth_place']})
+      person.death.update_attributes({time: Chronic.parse(row['death_day']), location: row['death_place']})
+    elsif !row['relationship_number'].blank?
+      parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
+      if !parent.nil?
+        partner_relationship = parent.relationship_people.where(type: 'RelationshipPartner').where(order: row['relationship_number']).first
+        if !partner_relationship.nil?
+          RelationshipChild.create({relationship_id: partner_relationship.relationship.id, person_id: person.id})
+        end
+      end
+    end
     person
   end
 

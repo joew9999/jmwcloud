@@ -22,7 +22,7 @@ describe Relationship do
     end
 
     it "should connect people to relationship" do
-      RelationshipPerson.all.count.should == 160
+      RelationshipPartner.all.count.should == 160
     end
 
     it "should make marriages" do

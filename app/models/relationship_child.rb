@@ -1,0 +1,2 @@
+class RelationshipChild < RelationshipPerson
+end

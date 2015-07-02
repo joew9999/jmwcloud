@@ -1,0 +1,2 @@
+class RelationshipPartner < RelationshipPerson
+end

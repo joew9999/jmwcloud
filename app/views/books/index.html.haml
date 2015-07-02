@@ -1,2 +1,4 @@
 %h1 Books
 No books available
+= form_tag books_path, method: 'post' do
+  = submit_tag 'create book'

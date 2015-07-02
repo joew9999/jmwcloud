@@ -8,6 +8,8 @@ describe Person do
   it { should have_many(:events).through(:event_people) }
   it { should have_many(:relationship_people) }
   it { should have_many(:relationships).through(:relationship_people) }
+  it { should belong_to(:parent_relationship) }
+  it { should have_many(:parents).through(:parent_relationship) }
 
   describe 'relationship order' do
     let!(:person) { Fabricate(:person) }
@@ -75,6 +77,15 @@ describe Person do
         person.death.time.should be_nil
       end
     end
+  end
+
+  describe 'parents' do
+  end
+
+  describe 'partners' do
+  end
+
+  describe 'children' do
   end
 
   describe 'import' do

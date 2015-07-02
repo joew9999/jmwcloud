@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150628222640) do
+ActiveRecord::Schema.define(version: 20150629002247) do
 
   create_table "book_numbers", force: true do |t|
     t.string   "kbn"
@@ -97,11 +97,13 @@ ActiveRecord::Schema.define(version: 20150628222640) do
     t.integer  "order"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
   end
 
   add_index "relationship_people", ["order"], name: "index_relationship_people_on_order", using: :btree
   add_index "relationship_people", ["person_id"], name: "index_relationship_people_on_person_id", using: :btree
   add_index "relationship_people", ["relationship_id"], name: "index_relationship_people_on_relationship_id", using: :btree
+  add_index "relationship_people", ["type"], name: "index_relationship_people_on_type", using: :btree
 
   create_table "relationships", force: true do |t|
     t.datetime "created_at"
