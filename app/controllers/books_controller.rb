@@ -90,15 +90,19 @@ class BooksController < AuthenticatedController
 
     def print_person(pdf, person)
       person_text = ''
-      married_text = ''
-      if person.partners.count > 0
-        married_text = " Married first time "
-#         married_text += "in #{person.marriages[0].date_display} " if person.marriages[0].date_display != ''
-        married_text += "to:"
-      end
-      person_text << "#{person.book_numbers.first.kbn}         #{person.name}#{date_text(person)}.#{married_text}"
-      person.partners.each_with_index do |partner, index|
-        person_text << "#{partner.name}#{date_text(partner)}"
+      person_text << "#{person.book_numbers.first.kbn}         #{person.name}#{date_text(person)}."
+      person.relationship_people.where(type: 'RelationshipPartner').each_with_index do |relationship_person, index|
+        relationship = relationship_person.relationship
+        partner = relationship.relationship_people.where(type: 'RelationshipPartner').where("person_id != #{person.id}").first.person
+        marriage_date = relationship.events.first.time rescue nil
+        child_count = relationship.relationship_people.where(type: 'RelationshipChild').count
+        if index == 0
+          person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{partner.name}#{date_text(partner)}, #{date_text(partner)}"
+        else
+          person_text << "\n#{partner.name}#{date_text(partner)} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner)}"
+        end
+        person_text << "; #{child_count} #{(child_count > 1)? 'children' : 'child'} by this union." if person.partners.count > 1
+        person_text << "\n" unless index == 0
       end
 
       if person.descendents > 0
