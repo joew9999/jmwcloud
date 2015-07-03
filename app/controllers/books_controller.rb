@@ -98,9 +98,9 @@ class BooksController < AuthenticatedController
         divorced = relationship.events.count > 1 rescue false
         child_count = relationship.relationship_people.where(type: 'RelationshipChild').count
         if index == 0
-          person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}#{date_text(partner)}, #{date_text(partner)}"
+          person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner)}"
         else
-          person_text << "\n#{(divorced)? '**' : '*'}#{partner.name}#{date_text(partner)} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner)}"
+          person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner)}"
         end
         person_text << "; #{child_count} #{(child_count > 1)? 'children' : 'child'} by this union." if person.partners.count > 1
         person_text << "\n" unless index == 0
