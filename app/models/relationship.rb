@@ -21,8 +21,12 @@ class Relationship < ActiveRecord::Base
       RelationshipPartner.create({relationship_id: relationship.id, person_id: person.id, order: row['order']})
       RelationshipPartner.create({relationship_id: relationship.id, person_id: partner.id, order: partner.relationships.count + 1})
       if !row['married'].blank? && !row['marriage_day'].blank?
-        event = Marriage.create({time: row['marriage_day']})
-        RelationshipEvent.create({relationship_id: relationship.id, event_id: event.id, order: 1})
+        marriage = Marriage.create({time: row['marriage_day']})
+        RelationshipEvent.create({relationship_id: relationship.id, event_id: marriage.id, order: 1})
+        if row['married'] == '**'
+          divorce = Divorce.create()
+          RelationshipEvent.create({relationship_id: relationship.id, event_id: divorce.id, order: 2})
+        end
       end
     end
     relationship

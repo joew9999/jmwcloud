@@ -1,0 +1,2 @@
+class Divorce < Event
+end
