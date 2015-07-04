@@ -27,7 +27,7 @@ class BooksController < AuthenticatedController
     pdf.text "<b>FIRST GENERATION IN TEXAS</b>", align: :center, inline_format: true
     pdf.move_down 13
     generation_text = ''
-    generation_text << print_person(pdf, root) + "\n"
+    generation_text << print_person(root) + "\n"
     pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
       pdf.text generation_text, inline_format: true
     end
@@ -42,7 +42,7 @@ class BooksController < AuthenticatedController
       unless partner.nil?
         generation_text << "<b>Children of #{root.name} and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
         relationship_person.relationship.relationship_people.where(type: 'RelationshipChild').each do |relationship_child|
-          generation_text << print_person(pdf, relationship_child.person) + "\n"
+          generation_text << print_person(relationship_child.person) + "\n"
         end
       end
     end
@@ -52,24 +52,11 @@ class BooksController < AuthenticatedController
     pdf.start_new_page
 
 ##### THIRD GENERATION #####
-    pdf.text "<b>THIRD GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.move_down 13
-    generation_text = ''
-    root.children.each do |root_child|
-      root_child.relationship_people.where(type: 'RelationshipPartner').each_with_index do |relationship_person, index|
-        partner = relationship_person.relationship.relationship_people.where(type: 'RelationshipPartner').where("person_id != #{root.id}").first.person rescue nil
-        unless partner.nil?
-          generation_text << "<b>Children of #{root_child.name} and #{(index + 1).ordinalise} #{(root_child.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
-          relationship_person.relationship.relationship_people.where(type: 'RelationshipChild').each do |relationship_child|
-            generation_text << print_person(pdf, relationship_child.person) + "\n"
-          end
-        end
-      end
-    end
+    generation_text = print_generation(root.children, '', 3)
+
     pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
       pdf.text generation_text, inline_format: true
     end
-    pdf.start_new_page
 
 ##### PRINT #####
     pdf.number_pages "<page>", { at: [pdf.bounds.right - 50, 0], width: 50, align: :right, start_count_at: 1 }
@@ -88,7 +75,26 @@ class BooksController < AuthenticatedController
       pdf.font_size 10
     end
 
-    def print_person(pdf, person)
+    def print_generation(people, text, generation)
+      children = []
+      text << "<b>#{generation.ordinalise.upcase} GENERATION IN TEXAS</b>\n\n"
+      people.each do |child|
+        child.relationship_people.where(type: 'RelationshipPartner').each_with_index do |relationship_person, index|
+          partner = relationship_person.relationship.relationship_people.where(type: 'RelationshipPartner').where("person_id != #{child.id}").first.person rescue nil
+          unless partner.nil?
+            text << "<b>Children of #{child.name} and #{(index + 1).ordinalise} #{(child.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+            relationship_person.relationship.relationship_people.where(type: 'RelationshipChild').each do |relationship_child|
+              text << print_person(relationship_child.person) + "\n"
+              children << relationship_child.person
+            end
+          end
+        end
+      end
+      text = print_generation(children, text, (generation + 1)) if children.count > 0
+      text
+    end
+
+    def print_person(person)
       person_text = ''
       person_text << "#{person.book_numbers.first.kbn}         #{person.name}#{date_text(person)}."
       person.relationship_people.where(type: 'RelationshipPartner').each_with_index do |relationship_person, index|
