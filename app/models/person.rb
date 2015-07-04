@@ -14,7 +14,9 @@ class Person < ActiveRecord::Base
   def parents
     parents = []
     Relationship.where("'#{self.id}' = ANY (children_ids)").each do |relationship|
-      parents << Person.where(id: relationship.partner_ids)
+      Person.where(id: relationship.partner_ids).each do |parent|
+        parents << parent
+      end
     end
     parents
   end
@@ -22,7 +24,9 @@ class Person < ActiveRecord::Base
   def partners
     partners = []
     Relationship.where("'#{self.id}' = ANY (partner_ids)").each do |relationship|
-      partners << Person.where(id: relationship.partner_ids).where.not(id: self.id)
+      Person.where(id: relationship.partner_ids).where.not(id: self.id).each do |partner|
+        partners << partner
+      end
     end
     partners
   end
@@ -73,12 +77,14 @@ class Person < ActiveRecord::Base
     elsif !row['relationship_number'].blank?
       parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
       if !parent.nil?
-        relationship = parent.relationship_ids[(row['relationship_number'] - 1)]
+        relationship = Relationship.find(parent.relationship_ids[(row['relationship_number'].to_i - 1)]) rescue nil
         if !relationship.nil?
-          relationship.children << person.id
+          relationship.children_ids << person.id
+          relationship.children_ids_will_change!
           relationship.save
         end
-        parent.children << person.id
+        parent.children_ids << person.id
+        parent.children_ids_will_change!
         parent.save
       end
     end

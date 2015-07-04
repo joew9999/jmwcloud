@@ -13,6 +13,10 @@
       %th Spouse
     - @relationships.each do |relationship|
       %tr
-        %td= relationship.people.first.name
-        %td= relationship.people.last.name
+        %td
+          - if relationship.partner_ids.length > 0
+            = Person.find(relationship.partner_ids[0]).name
+        %td
+          - if relationship.partner_ids.length > 1
+            = Person.find(relationship.partner_ids[1]).name
 = will_paginate @relationships

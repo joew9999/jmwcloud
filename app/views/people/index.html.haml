@@ -19,12 +19,16 @@
       %tr
         %td= person.first_name
         %td= person.last_name
-        %td= person.relationship_people.where(type: 'RelationshipChild').first.relationship.relationship_people.where(type: 'RelationshipPartner').first.person.name rescue nil
-        %td= person.relationship_people.where(type: 'RelationshipChild').first.relationship.relationship_people.where(type: 'RelationshipPartner').second.person.name rescue nil
+        %td
+          - if person.parents.count > 0
+            = person.parents.first.name
+        %td
+          - if person.parents.count > 1
+            = person.parents.second.name
         %td
           - if person.partners.count > 0
             = person.partners.first.name
         %td
-          - if person.children.count > 0
+          - if person.children.count > 1
             = person.children.first.name
 = will_paginate @people
