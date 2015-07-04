@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150702153308) do
+ActiveRecord::Schema.define(version: 20150704033708) do
 
   create_table "book_numbers", force: true do |t|
     t.string   "kbn"
@@ -20,27 +20,6 @@ ActiveRecord::Schema.define(version: 20150702153308) do
   end
 
   add_index "book_numbers", ["kbn"], name: "index_book_numbers_on_kbn", using: :btree
-
-  create_table "event_people", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "person_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "event_people", ["event_id"], name: "index_event_people_on_event_id", using: :btree
-  add_index "event_people", ["person_id"], name: "index_event_people_on_person_id", using: :btree
-
-  create_table "events", force: true do |t|
-    t.string   "type"
-    t.string   "time"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "location"
-  end
-
-  add_index "events", ["location"], name: "index_events_on_location", using: :btree
-  add_index "events", ["time"], name: "index_events_on_time", using: :btree
 
   create_table "images", force: true do |t|
     t.string   "type"
@@ -55,14 +34,14 @@ ActiveRecord::Schema.define(version: 20150702153308) do
   create_table "people", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.datetime "birth_date"
-    t.integer  "birth_place_id"
-    t.datetime "death_date"
-    t.integer  "death_place_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "male",           default: false
+    t.boolean  "male",        default: false
     t.string   "suffix"
+    t.string   "birth_day"
+    t.string   "birth_place"
+    t.string   "death_day"
+    t.string   "death_place"
   end
 
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
@@ -78,18 +57,6 @@ ActiveRecord::Schema.define(version: 20150702153308) do
 
   add_index "people_book_numbers", ["book_number_id"], name: "index_people_book_numbers_on_book_number_id", using: :btree
   add_index "people_book_numbers", ["person_id"], name: "index_people_book_numbers_on_person_id", using: :btree
-
-  create_table "relationship_events", force: true do |t|
-    t.integer  "relationship_id"
-    t.integer  "event_id"
-    t.integer  "order"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "relationship_events", ["event_id"], name: "index_relationship_events_on_event_id", using: :btree
-  add_index "relationship_events", ["order"], name: "index_relationship_events_on_order", using: :btree
-  add_index "relationship_events", ["relationship_id"], name: "index_relationship_events_on_relationship_id", using: :btree
 
   create_table "relationship_people", force: true do |t|
     t.integer  "relationship_id"
@@ -108,6 +75,8 @@ ActiveRecord::Schema.define(version: 20150702153308) do
   create_table "relationships", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "marriage_day"
+    t.string   "divorce_day"
   end
 
   create_table "users", force: true do |t|

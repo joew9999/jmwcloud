@@ -2,8 +2,6 @@ class Person < ActiveRecord::Base
   has_one :user
   has_many :people_book_numbers
   has_many :book_numbers, through: :people_book_numbers
-  has_many :event_people
-  has_many :events, through: :event_people
   has_many :relationship_people
   has_many :relationships, through: :relationship_people
 
@@ -17,18 +15,6 @@ class Person < ActiveRecord::Base
 
   def self.find_by_kbn(kbn)
     BookNumber.where(kbn: kbn).first.people.first rescue nil
-  end
-
-  def birth
-    birth = self.events.where(type: 'Birth').first_or_create
-    EventPerson.create({event_id: birth.id, person_id: self.id}) unless birth.people.include?(self)
-    birth
-  end
-
-  def death
-    death = self.events.where(type: 'Death').first_or_create
-    EventPerson.create({event_id: death.id, person_id: self.id}) unless death.people.include?(self)
-    death
   end
 
   def parents
@@ -99,10 +85,8 @@ class Person < ActiveRecord::Base
   def self.import_row(row)
     person = Person.find_by_kbn(row['KBN'])
     if person.nil?
-      person = Person.create({first_name: row['first_name'], last_name: row['last_name'], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false)})
+      person = Person.create({first_name: row['first_name'], last_name: row['last_name'], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false), birth_day: row['birth_day'], birth_place: row['birth_place'], death_day: row['death_day'], death_place: row['death_place']})
       person.import_kbn(row)
-      person.birth.update_attributes({time: row['birth_day'], location: row['birth_place']})
-      person.death.update_attributes({time: row['death_day'], location: row['death_place']})
     elsif !row['relationship_number'].blank?
       parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
       if !parent.nil?
