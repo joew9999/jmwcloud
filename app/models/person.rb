@@ -1,7 +1,5 @@
 class Person < ActiveRecord::Base
   has_one :user
-  has_many :relationship_people
-  has_many :relationships, through: :relationship_people
 
   validates_uniqueness_of :kbn, allow_nil: true
 
@@ -15,32 +13,22 @@ class Person < ActiveRecord::Base
 
   def parents
     parents = []
-    self.relationship_people.where(type: 'RelationshipChild').each do |child_relationship|
-      child_relationship.relationship.relationship_people.where(type: 'RelationshipPartner').each do |partner_relationship|
-        parents << partner_relationship.person
-      end
+    Relationship.where("'#{self.id}' = ANY (children_ids)").each do |relationship|
+      parents << Person.where(id: relationship.partner_ids)
     end
     parents
   end
 
   def partners
     partners = []
-    self.relationship_people.where(type: 'RelationshipPartner').each do |relationship|
-      relationship.relationship.relationship_people.where(type: 'RelationshipPartner').each do |partner_relationship|
-        partners << partner_relationship.person if partner_relationship.person_id != self.id
-      end
+    Relationship.where("'#{self.id}' = ANY (partner_ids)").each do |relationship|
+      partners << Person.where(id: relationship.partner_ids).where.not(id: self.id)
     end
     partners
   end
 
   def children
-    children = []
-    self.relationship_people.where(type: 'RelationshipPartner').each do |relationship|
-      relationship.relationship.relationship_people.where(type: 'RelationshipChild').each do |child_relationship|
-        children << child_relationship.person
-      end
-    end
-    children
+    Person.where(id: self.children_ids)
   end
 
   def grandchildren
@@ -85,10 +73,13 @@ class Person < ActiveRecord::Base
     elsif !row['relationship_number'].blank?
       parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
       if !parent.nil?
-        partner_relationship = parent.relationship_people.where(type: 'RelationshipPartner').where(order: row['relationship_number']).first
-        if !partner_relationship.nil?
-          RelationshipChild.create({relationship_id: partner_relationship.relationship.id, person_id: person.id})
+        relationship = parent.relationship_ids[(row['relationship_number'] - 1)]
+        if !relationship.nil?
+          relationship.children << person.id
+          relationship.save
         end
+        parent.children << person.id
+        parent.save
       end
     end
     person

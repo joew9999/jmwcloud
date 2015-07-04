@@ -1,2 +1,0 @@
-class RelationshipChild < RelationshipPerson
-end

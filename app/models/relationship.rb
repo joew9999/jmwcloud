@@ -1,7 +1,4 @@
 class Relationship < ActiveRecord::Base
-  has_many :relationship_people
-  has_many :people, through: :relationship_people
-
   def self.import(csv)
     relationships = []
     csv.each do |row|
@@ -17,10 +14,14 @@ class Relationship < ActiveRecord::Base
     partner.update_attributes({birth_day: row['birth_day'], death_day: row['death_day']})
     if !person.nil? && !partner.nil?
       relationship = Relationship.create
-      RelationshipPartner.create({relationship_id: relationship.id, person_id: person.id, order: row['order']})
-      RelationshipPartner.create({relationship_id: relationship.id, person_id: partner.id, order: partner.relationships.count + 1})
-      relationship.update_attributes({marriage_day: row['marriage_day']}) if !row['married'].blank? && !row['marriage_day'].blank?
-      relationship.update_attributes({divorce_day: row['divorce_day']}) if row['married'] == '**'
+      relationship.partner_ids << partner.id
+      relationship.marriage_day = row['marriage_day'] if !row['married'].blank? && !row['marriage_day'].blank?
+      relationship.divorce_day = row['divorce_day'] if row['married'] == '**'
+      relationship.save
+      person.relationship_ids << relationship.id
+      person.save
+      partner.relationship_ids << relationship.id
+      partner.save
     end
     relationship
   end

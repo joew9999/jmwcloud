@@ -1,2 +1,0 @@
-class Death < Event
-end

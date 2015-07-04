@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150704040022) do
+ActiveRecord::Schema.define(version: 20150704043737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,13 +31,15 @@ ActiveRecord::Schema.define(version: 20150704040022) do
     t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "male",        default: false
+    t.boolean  "male",             default: false
     t.string   "suffix"
     t.string   "birth_day"
     t.string   "birth_place"
     t.string   "death_day"
     t.string   "death_place"
     t.string   "kbn"
+    t.text     "relationship_ids", default: [],    array: true
+    t.text     "children_ids",     default: [],    array: true
   end
 
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
@@ -45,25 +47,13 @@ ActiveRecord::Schema.define(version: 20150704040022) do
   add_index "people", ["last_name"], name: "index_people_on_last_name", using: :btree
   add_index "people", ["male"], name: "index_people_on_male", using: :btree
 
-  create_table "relationship_people", force: true do |t|
-    t.integer  "relationship_id"
-    t.integer  "person_id"
-    t.integer  "order"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "type"
-  end
-
-  add_index "relationship_people", ["order"], name: "index_relationship_people_on_order", using: :btree
-  add_index "relationship_people", ["person_id"], name: "index_relationship_people_on_person_id", using: :btree
-  add_index "relationship_people", ["relationship_id"], name: "index_relationship_people_on_relationship_id", using: :btree
-  add_index "relationship_people", ["type"], name: "index_relationship_people_on_type", using: :btree
-
   create_table "relationships", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "marriage_day"
     t.string   "divorce_day"
+    t.text     "partner_ids",  default: [], array: true
+    t.text     "children_ids", default: [], array: true
   end
 
   create_table "users", force: true do |t|

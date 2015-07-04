@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe Relationship do
-  it { should have_many(:relationship_people) }
-  it { should have_many(:people).through(:relationship_people) }
-
   describe 'import' do
     let(:people_csv_text) { File.read(File.join(Rails.root, '/spec/fixtures/files/people_good.csv')) }
     let(:people_csv) { CSV.parse(people_csv_text, :headers => true) }
@@ -17,10 +14,6 @@ describe Relationship do
 
     it "should make relationships" do
       Relationship.all.count.should == 80
-    end
-
-    it "should connect people to relationship" do
-      RelationshipPartner.all.count.should == 160
     end
   end
 end
