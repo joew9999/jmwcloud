@@ -1,9 +1,9 @@
 class Person < ActiveRecord::Base
   has_one :user
-  has_many :people_book_numbers
-  has_many :book_numbers, through: :people_book_numbers
   has_many :relationship_people
   has_many :relationships, through: :relationship_people
+
+  validates_uniqueness_of :kbn, allow_nil: true
 
   scope :no_gender, -> { where(male: nil) }
   scope :male, -> { where(male: true) }
@@ -11,10 +11,6 @@ class Person < ActiveRecord::Base
 
   def name
     "#{self.first_name} #{self.last_name}"
-  end
-
-  def self.find_by_kbn(kbn)
-    BookNumber.where(kbn: kbn).first.people.first rescue nil
   end
 
   def parents
@@ -85,8 +81,7 @@ class Person < ActiveRecord::Base
   def self.import_row(row)
     person = Person.find_by_kbn(row['KBN'])
     if person.nil?
-      person = Person.create({first_name: row['first_name'], last_name: row['last_name'], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false), birth_day: row['birth_day'], birth_place: row['birth_place'], death_day: row['death_day'], death_place: row['death_place']})
-      person.import_kbn(row)
+      person = Person.create({kbn: row['KBN'], first_name: row['first_name'], last_name: row['last_name'], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false), birth_day: row['birth_day'], birth_place: row['birth_place'], death_day: row['death_day'], death_place: row['death_place']})
     elsif !row['relationship_number'].blank?
       parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
       if !parent.nil?
@@ -97,24 +92,5 @@ class Person < ActiveRecord::Base
       end
     end
     person
-  end
-
-  def import_kbn(row)
-    unless self.id.nil?
-      unless row['KBN'].blank?
-        self.connect_kbn(row['KBN'])
-      end
-      unless row['KBN2'].blank?
-        self.connect_kbn(row['KBN2'])
-      end
-      unless row['KBN3'].blank?
-        self.connect_kbn(row['KBN3'])
-      end
-    end
-  end
-
-  def connect_kbn(kbn)
-    book_number = BookNumber.where(kbn: kbn).first_or_create
-    PeopleBookNumber.create({book_number_id: book_number.id, person_id: self.id})
   end
 end

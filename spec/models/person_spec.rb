@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe Person do
   it { should have_one(:user) }
-  it { should have_many(:people_book_numbers) }
-  it { should have_many(:book_numbers).through(:people_book_numbers) }
   it { should have_many(:relationship_people) }
   it { should have_many(:relationships).through(:relationship_people) }
   it { should belong_to(:parent_relationship) }
   it { should have_many(:parents).through(:parent_relationship) }
+
+  it { should validate_uniqueness_of(:kbn) }
 
   describe 'relationship order' do
     let!(:person) { Fabricate(:person) }
@@ -49,12 +49,6 @@ describe Person do
     it "should make people" do
       Person::import(csv)
       Person.all.count.should == 100
-    end
-
-    it "should only create one kbn number per person" do
-      Person::import(csv)
-      BookNumber.all.count.should == 100
-      Person.all.first.book_numbers.count.should == 1
     end
 
     it "should have gender data" do
