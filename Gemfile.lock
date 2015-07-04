@@ -200,7 +200,6 @@ GEM
     mono_logger (1.1.0)
     multi_json (1.11.0)
     multi_test (0.1.2)
-    mysql2 (0.3.18)
     nenv (0.2.0)
     netrc (0.10.3)
     nokogiri (1.6.6.2)
@@ -415,7 +414,6 @@ DEPENDENCIES
   letter_opener
   meta_request
   mocha
-  mysql2
   ordinalize
   paperclip
   pg

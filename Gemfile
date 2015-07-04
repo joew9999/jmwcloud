@@ -3,7 +3,6 @@ ruby "2.1.4"
 
 gem 'rails', '4.1.1'
 gem 'pg'
-gem 'mysql2'
 
 gem 'rest-client'
 
