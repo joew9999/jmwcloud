@@ -53,9 +53,9 @@ class Person < ActiveRecord::Base
     count = 0
     char_count = self.kbn.size + generation
     if self.kbn == '0'
-      count = Person.where("kbn IS NOT NULL").where("kbn != ''").where("LENGTH(kbn) = #{char_count}").count
+      count = Person.where("kbn IS NOT NULL").where.not(kbn: '0').where.not(kbn: '').where("LENGTH(kbn) = #{char_count - 1}").count
     else
-      count = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where("kbn != ''").where("LENGTH(kbn) = #{char_count}").count
+      count = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where.not(kbn: '').where("LENGTH(kbn) = #{char_count}").count
     end
     count
   end
