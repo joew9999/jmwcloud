@@ -98,7 +98,6 @@ class BooksController < AuthenticatedController
           end
         end
       end
-#       text = print_generation(children, text, (generation + 1)) if children.count > 0
       text = print_generation(children, text, (generation + 1)) if generation < 11
       text
     end
