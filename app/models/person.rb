@@ -11,6 +11,10 @@ class Person < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}"
   end
 
+  def relationships
+    Relationship.where(id: self.relationship_ids)
+  end
+
   def parents
     parents = []
     Relationship.where("'#{self.id}' = ANY (children_ids)").each do |relationship|
@@ -35,29 +39,23 @@ class Person < ActiveRecord::Base
     Person.where(id: self.children_ids)
   end
 
-  def grandchildren
-    count = 0
-    self.children.each do |child|
-      count = count + child.children.count
-    end
-    count
-  end
-
-  def greatgrandchildren(count, generation)
-    self.children.each do |child|
-      if generation == 0
-        count = count + child.children.count
-      else
-        count = child.greatgrandchildren(count, generation - 1)
-      end
-    end
-    count
-  end
-
   def descendents
     count = 0
-    self.children.each do |child|
-      count = count + 1 + child.children.count
+    if self.kbn == '0'
+      count = Person.where("kbn IS NOT NULL").where("kbn != ''").where.not(id: self.id).count
+    else
+      count = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where("kbn != ''").where.not(id: self.id).count
+    end
+    count
+  end
+
+  def greatgrandchildren(generation)
+    count = 0
+    char_count = self.kbn.size + generation
+    if self.kbn == '0'
+      count = Person.where("kbn IS NOT NULL").where("kbn != ''").where("LENGTH(kbn) = #{char_count}").count
+    else
+      count = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where("kbn != ''").where("LENGTH(kbn) = #{char_count}").count
     end
     count
   end

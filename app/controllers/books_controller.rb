@@ -23,7 +23,7 @@ class BooksController < AuthenticatedController
 
     setup_font(pdf)
 ##### FIRST GENERATION #####
-    root = Person.find_by_kbn(0)
+    root = Person.find_by_kbn('0')
     pdf.text "<b>FIRST GENERATION IN TEXAS</b>", align: :center, inline_format: true
     pdf.move_down 13
     generation_text = ''
@@ -37,12 +37,12 @@ class BooksController < AuthenticatedController
     pdf.text "<b>SECOND GENERATION IN TEXAS</b>", align: :center, inline_format: true
     pdf.move_down 13
     generation_text = ''
-    root.relationship_people.where(type: 'RelationshipPartner').each_with_index do |relationship_person, index|
-      partner = relationship_person.relationship.relationship_people.where(type: 'RelationshipPartner').where("person_id != #{root.id}").first.person rescue nil
+    root.relationships.each_with_index do |relationship, index|
+      partner = Person.where(id: relationship.partner_ids).where.not(id: root.id).first rescue nil
       unless partner.nil?
-        generation_text << "<b>Children of #{root.name} and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
-        relationship_person.relationship.relationship_people.where(type: 'RelationshipChild').each do |relationship_child|
-          generation_text << print_person(relationship_child.person) + "\n"
+        generation_text << "<b>Children of #{root.name}(#{root.kbn}) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+        relationship.children.each do |child|
+          generation_text << print_person(child) + "\n"
         end
       end
     end
@@ -79,30 +79,30 @@ class BooksController < AuthenticatedController
       children = []
       text << "<b>#{generation.ordinalise.upcase} GENERATION IN TEXAS</b>\n\n"
       people.each do |child|
-        child.relationship_people.where(type: 'RelationshipPartner').each_with_index do |relationship_person, index|
-          partner = relationship_person.relationship.relationship_people.where(type: 'RelationshipPartner').where("person_id != #{child.id}").first.person rescue nil
+        child.relationships.each_with_index do |relationship, index|
+          partner = Person.where(id: relationship.partner_ids).where.not(id: child.id).first rescue nil
           unless partner.nil?
-            text << "<b>Children of #{child.name} and #{(index + 1).ordinalise} #{(child.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
-            relationship_person.relationship.relationship_people.where(type: 'RelationshipChild').each do |relationship_child|
-              text << print_person(relationship_child.person) + "\n"
-              children << relationship_child.person
+            text << "<b>Children of #{child.name}(#{child.kbn}) and #{(index + 1).ordinalise} #{(child.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+            relationship.children.each do |child|
+              text << print_person(child) + "\n"
+              children << child
             end
           end
         end
       end
-      text = print_generation(children, text, (generation + 1)) if children.count > 0
+#       text = print_generation(children, text, (generation + 1)) if children.count > 0
+      text = print_generation(children, text, (generation + 1)) if generation < 11
       text
     end
 
     def print_person(person)
       person_text = ''
-      person_text << "#{person.book_numbers.first.kbn}         #{person.name}#{date_text(person)}."
-      person.relationship_people.where(type: 'RelationshipPartner').each_with_index do |relationship_person, index|
-        relationship = relationship_person.relationship
-        partner = relationship.relationship_people.where(type: 'RelationshipPartner').where("person_id != #{person.id}").first.person
-        marriage_date = relationship.events.first.time rescue nil
-        divorced = relationship.events.count > 1 rescue false
-        child_count = relationship.relationship_people.where(type: 'RelationshipChild').count
+      person_text << "#{person.kbn}         #{person.name}#{date_text(person)}."
+      person.relationships.each_with_index do |relationship, index|
+        partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
+        marriage_date = relationship.marriage_day
+        divorced = (relationship.divorce_day.nil?)? false : true
+        child_count = relationship.children.count
         if index == 0
           person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner)}"
         else
@@ -114,22 +114,22 @@ class BooksController < AuthenticatedController
 
       if person.descendents > 0
         person_text << "\n#{person.descendents} Total descendants"
-        if person.children.count > 0
-          person_text << "\n#{person.children.count} Children"
-          if person.grandchildren > 0
-            person_text << "\n#{person.grandchildren} Grandchildren"
-            if person.greatgrandchildren(0, 1) > 0
-              person_text << "\n#{person.greatgrandchildren(0, 1)} Great grandchildren"
-              if person.greatgrandchildren(0, 2) > 0
-                person_text << "\n#{person.greatgrandchildren(0, 2)} Great great grandchildren"
-                if person.greatgrandchildren(0, 3) > 0
-                  person_text << "\n#{person.greatgrandchildren(0, 3)} Great great great grandchildren"
-                  if person.greatgrandchildren(0, 4) > 0
-                    person_text << "\n#{person.greatgrandchildren(0, 4)} Great great great great grandchildren"
-                    if person.greatgrandchildren(0, 5) > 0
-                      person_text << "\n#{person.greatgrandchildren(0, 5)} Great great great great great grandchildren"
-                      if person.greatgrandchildren(0, 6) > 0
-                        person_text << "\n#{person.greatgrandchildren(0, 6)} Great great great great great great grandchildren"
+        if person.greatgrandchildren(1) > 0
+          person_text << "\n#{person.greatgrandchildren(1)} Children"
+          if person.greatgrandchildren(2) > 0
+            person_text << "\n#{person.greatgrandchildren(2)} Grandchildren"
+            if person.greatgrandchildren(3) > 0
+              person_text << "\n#{person.greatgrandchildren(3)} Great grandchildren"
+              if person.greatgrandchildren(4) > 0
+                person_text << "\n#{person.greatgrandchildren(4)} Great great grandchildren"
+                if person.greatgrandchildren(5) > 0
+                  person_text << "\n#{person.greatgrandchildren(5)} Great great great grandchildren"
+                  if person.greatgrandchildren(6) > 0
+                    person_text << "\n#{person.greatgrandchildren(6)} Great great great great grandchildren"
+                    if person.greatgrandchildren(7) > 0
+                      person_text << "\n#{person.greatgrandchildren(7)} Great great great great great grandchildren"
+                      if person.greatgrandchildren(8) > 0
+                        person_text << "\n#{person.greatgrandchildren(8)} Great great great great great great grandchildren"
                       end
                     end
                   end
@@ -145,18 +145,16 @@ class BooksController < AuthenticatedController
     end
 
     def date_text(person)
-      birth = person.events.where(type: 'Birth').first
-      death = person.events.where(type: 'Death').first
       date_text = ""
-      unless birth.nil?
-        born_text = "born #{birth.time.to_s}"
+      if !person.birth_day.blank?
+        born_text = "born #{person.birth_day}"
         born_text += ", " if born_text != "born "
-        born_text += "in #{birth.location}" if birth.location != ''
+        born_text += "in #{person.birth_place}" if !person.birth_place.blank?
       end
-      unless death.nil?
-        death_text = "died #{death.time.to_s}"
+      if !person.death_day.blank?
+        death_text = "died #{person.death_day}"
         death_text += ", " if death_text != "died "
-        death_text += "at #{death.location}" if death.location != ''
+        death_text += "at #{person.death_place}" if !person.death_place.blank?
       end
       date_text += born_text unless born_text.nil?
       date_text += "; #{death_text}" unless death_text.nil?

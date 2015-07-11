@@ -1,4 +1,8 @@
 class Relationship < ActiveRecord::Base
+  def children
+    Person.where(id: self.children_ids)
+  end
+
   def self.import(csv)
     relationships = []
     csv.each do |row|
