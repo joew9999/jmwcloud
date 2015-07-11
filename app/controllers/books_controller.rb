@@ -40,7 +40,11 @@ class BooksController < AuthenticatedController
     root.relationships.each_with_index do |relationship, index|
       partner = Person.where(id: relationship.partner_ids).where.not(id: root.id).first rescue nil
       unless partner.nil?
-        generation_text << "<b>Children of #{root.name}(#{root.kbn}) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+        if root.relationships.count > 1
+          generation_text << "<b>Children of #{root.name}(#{root.kbn}) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+        else
+          generation_text << "<b>Children of #{root.name}(#{root.kbn}) and #{partner.name}:</b>\n\n"
+        end
         relationship.children.each do |child|
           generation_text << print_person(child) + "\n"
         end
@@ -82,7 +86,11 @@ class BooksController < AuthenticatedController
         child.relationships.each_with_index do |relationship, index|
           partner = Person.where(id: relationship.partner_ids).where.not(id: child.id).first rescue nil
           unless partner.nil?
-            text << "<b>Children of #{child.name}(#{child.kbn}) and #{(index + 1).ordinalise} #{(child.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+            if child.relationships.count > 1
+              text << "<b>Children of #{child.name}(#{child.kbn}) and #{(index + 1).ordinalise} #{(child.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+            else
+              text << "<b>Children of #{child.name}(#{child.kbn}) and #{partner.name}:</b>\n\n"
+            end
             relationship.children.each do |child|
               text << print_person(child) + "\n"
               children << child
