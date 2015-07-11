@@ -161,7 +161,7 @@ class BooksController < AuthenticatedController
       if !person.death_day.blank?
         death_text = "died #{person.death_day}"
         death_text += ", " if death_text != "died "
-        death_text += "at #{person.death_place}" if !person.death_place.blank?
+        death_text += "buried #{person.death_place}" if !person.death_place.blank?
       end
       date_text += born_text unless born_text.nil?
       date_text += "; #{death_text}" unless death_text.nil?
