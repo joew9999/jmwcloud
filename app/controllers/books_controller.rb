@@ -153,7 +153,7 @@ class BooksController < AuthenticatedController
       person_text + "\n"
     end
 
-    def date_text(person, show_locations)
+    def date_text(person, show_location)
       date_text = ""
       if !person.birth_day.blank?
         born_text = "born #{person.birth_day}"
