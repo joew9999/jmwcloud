@@ -106,17 +106,19 @@ class BooksController < AuthenticatedController
       person_text = ''
       person_text << "#{person.kbn}         #{person.name}#{date_text(person, true)}."
       person.relationships.each_with_index do |relationship, index|
-        partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
-        marriage_date = relationship.marriage_day
-        divorced = (relationship.divorce_day.nil?)? false : true
         child_count = relationship.children.count
-        if index == 0
-          person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner, false)}"
-        else
-          person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false)}"
+        if child_count > 0
+          partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
+          marriage_date = relationship.marriage_day
+          divorced = (relationship.divorce_day.nil?)? false : true
+          if index == 0
+            person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner, false)}"
+          else
+            person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false)}"
+          end
+          person_text << "; #{child_count} #{(child_count > 1)? 'children' : 'child'} by this union." if person.partners.count > 1
+          person_text << "\n" unless index == 0
         end
-        person_text << "; #{child_count} #{(child_count > 1)? 'children' : 'child'} by this union." if person.partners.count > 1
-        person_text << "\n" unless index == 0
       end
 
       if person.descendents > 0
