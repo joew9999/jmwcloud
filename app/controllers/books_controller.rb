@@ -82,21 +82,21 @@ class BooksController < AuthenticatedController
     def print_generation(people, text, generation)
       children = []
       text << "<b>#{generation.ordinalise.upcase} GENERATION IN TEXAS</b>\n\n"
-      people.each do |child|
-        child.relationships.each_with_index do |relationship, index|
-          partner = Person.where(id: relationship.partner_ids).where.not(id: child.id).first rescue nil
+      people.each do |person|
+        person.relationships.each_with_index do |relationship, index|
+          partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first rescue nil
           unless partner.nil?
-            if child.relationships.count > 1
-              text << "<b>Children of #{child.name}(#{child.kbn}) and #{(index + 1).ordinalise} #{(child.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+            if person.relationships.count > 1
+              text << "<b>Children of #{person.name}(#{person.kbn}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
             else
-              text << "<b>Children of #{child.name}(#{child.kbn}) and #{partner.name}:</b>\n\n"
+              text << "<b>Children of #{person.name}(#{person.kbn}) and #{partner.name}:</b>\n\n"
             end
             relationship.children.each do |child|
               text << print_person(child) + "\n"
-              children << child
             end
           end
         end
+        children = children + person.greatgrandchildren(1)
       end
       text = print_generation(children, text, (generation + 1)) if generation < 11
       text
@@ -121,24 +121,24 @@ class BooksController < AuthenticatedController
         end
       end
 
-      if person.descendents > 0
-        person_text << "\n#{person.descendents} Total descendants"
-        if person.greatgrandchildren(1) > 0
-          person_text << "\n#{person.greatgrandchildren(1)} Children"
-          if person.greatgrandchildren(2) > 0
-            person_text << "\n#{person.greatgrandchildren(2)} Grandchildren"
-            if person.greatgrandchildren(3) > 0
-              person_text << "\n#{person.greatgrandchildren(3)} Great grandchildren"
-              if person.greatgrandchildren(4) > 0
-                person_text << "\n#{person.greatgrandchildren(4)} Great great grandchildren"
-                if person.greatgrandchildren(5) > 0
-                  person_text << "\n#{person.greatgrandchildren(5)} Great great great grandchildren"
-                  if person.greatgrandchildren(6) > 0
-                    person_text << "\n#{person.greatgrandchildren(6)} Great great great great grandchildren"
-                    if person.greatgrandchildren(7) > 0
-                      person_text << "\n#{person.greatgrandchildren(7)} Great great great great great grandchildren"
-                      if person.greatgrandchildren(8) > 0
-                        person_text << "\n#{person.greatgrandchildren(8)} Great great great great great great grandchildren"
+      if person.descendents.count > 0
+        person_text << "\n#{person.descendents.count} Total descendants"
+        if person.greatgrandchildren(1).count > 0
+          person_text << "\n#{person.greatgrandchildren(1).count} Children"
+          if person.greatgrandchildren(2).count > 0
+            person_text << "\n#{person.greatgrandchildren(2).count} Grandchildren"
+            if person.greatgrandchildren(3).count > 0
+              person_text << "\n#{person.greatgrandchildren(3).count} Great grandchildren"
+              if person.greatgrandchildren(4).count > 0
+                person_text << "\n#{person.greatgrandchildren(4).count} Great great grandchildren"
+                if person.greatgrandchildren(5).count > 0
+                  person_text << "\n#{person.greatgrandchildren(5).count} Great great great grandchildren"
+                  if person.greatgrandchildren(6).count > 0
+                    person_text << "\n#{person.greatgrandchildren(6).count} Great great great great grandchildren"
+                    if person.greatgrandchildren(7).count > 0
+                      person_text << "\n#{person.greatgrandchildren(7).count} Great great great great great grandchildren"
+                      if person.greatgrandchildren(8).count > 0
+                        person_text << "\n#{person.greatgrandchildren(8).count} Great great great great great great grandchildren"
                       end
                     end
                   end

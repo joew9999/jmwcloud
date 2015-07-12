@@ -40,24 +40,24 @@ class Person < ActiveRecord::Base
   end
 
   def descendents
-    count = 0
+    people = []
     if self.kbn == '0'
-      count = Person.where("kbn IS NOT NULL").where("kbn != ''").where.not(id: self.id).count
+      people = Person.where("kbn IS NOT NULL").where("kbn != ''").where.not(id: self.id)
     else
-      count = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where("kbn != ''").where.not(id: self.id).count
+      people = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where("kbn != ''").where.not(id: self.id)
     end
-    count
+    people
   end
 
   def greatgrandchildren(generation)
-    count = 0
+    people = []
     char_count = self.kbn.size + generation
     if self.kbn == '0'
-      count = Person.where("kbn IS NOT NULL").where.not(kbn: '0').where.not(kbn: '').where("LENGTH(kbn) = #{char_count - 1}").count
+      people = Person.where("kbn IS NOT NULL").where.not(kbn: '0').where.not(kbn: '').where("LENGTH(kbn) = #{char_count - 1}")
     else
-      count = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where.not(kbn: '').where("LENGTH(kbn) = #{char_count}").count
+      people = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where.not(kbn: '').where("LENGTH(kbn) = #{char_count}")
     end
-    count
+    people
   end
 
   def self.import(csv)
