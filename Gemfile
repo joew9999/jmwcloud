@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.1.4"
+ruby "2.2.2"
 
 gem 'rails', '4.1.1'
 gem 'pg'
@@ -42,7 +42,6 @@ gem 'rolify'
 gem 'chronic'
 gem 'ordinalize'
 
-gem 'figaro'
 gem 'launchy'
 
 group :production do
@@ -75,3 +74,5 @@ group :development do
   gem 'meta_request'
   gem 'letter_opener'
 end
+
+gem 'dotenv-rails'
