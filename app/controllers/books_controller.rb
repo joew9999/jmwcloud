@@ -40,13 +40,16 @@ class BooksController < AuthenticatedController
     root.relationships.each_with_index do |relationship, index|
       partner = Person.where(id: relationship.partner_ids).where.not(id: root.id).first rescue nil
       unless partner.nil?
-        if root.relationships.count > 1
-          generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
-        else
-          generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{partner.name}:</b>\n\n"
-        end
-        relationship.children.each do |child|
-          generation_text << print_person(child) + "\n"
+        child_count = relationship.children.count
+        if child_count > 0
+          if root.relationships.count > 1
+            generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+          else
+            generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{partner.name}:</b>\n\n"
+          end
+          relationship.children.each do |child|
+            generation_text << print_person(child) + "\n"
+          end
         end
       end
     end
@@ -86,13 +89,16 @@ class BooksController < AuthenticatedController
         person.relationships.each_with_index do |relationship, index|
           partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first rescue nil
           unless partner.nil?
-            if person.relationships.count > 1
-              text << "<b>Children of #{person.name} (#{person.kbn}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
-            else
-              text << "<b>Children of #{person.name} (#{person.kbn}) and #{partner.name}:</b>\n\n"
-            end
-            relationship.children.order("kbn ASC").each do |child|
-              text << print_person(child) + "\n"
+            child_count = relationship.children.count
+            if child_count > 0
+              if person.relationships.count > 1
+                text << "<b>Children of #{person.name} (#{person.kbn}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+              else
+                text << "<b>Children of #{person.name} (#{person.kbn}) and #{partner.name}:</b>\n\n"
+              end
+              relationship.children.order("kbn ASC").each do |child|
+                text << print_person(child) + "\n"
+              end
             end
           end
         end
@@ -107,18 +113,16 @@ class BooksController < AuthenticatedController
       person_text << "#{person.kbn}         #{person.name}#{date_text(person, true)}."
       person.relationships.each_with_index do |relationship, index|
         child_count = relationship.children.count
-        if child_count > 0
-          partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
-          marriage_date = relationship.marriage_day
-          divorced = (relationship.divorce_day.nil?)? false : true
-          if index == 0
-            person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner, false)}"
-          else
-            person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false)}"
-          end
-          person_text << "; #{child_count} #{(child_count > 1)? 'children' : 'child'} by this union." if person.partners.count > 1
-          person_text << "\n" unless index == 0
+        partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
+        marriage_date = relationship.marriage_day
+        divorced = (relationship.divorce_day.nil?)? false : true
+        if index == 0
+          person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner, false)}"
+        else
+          person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false)}"
         end
+        person_text << "; #{child_count} #{(child_count > 1)? 'children' : 'child'} by this union." if person.partners.count > 1
+        person_text << "\n" unless index == 0
       end
 
       if person.descendents.count > 0
