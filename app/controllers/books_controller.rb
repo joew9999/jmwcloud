@@ -91,7 +91,7 @@ class BooksController < AuthenticatedController
             else
               text << "<b>Children of #{person.name} (#{person.kbn}) and #{partner.name}:</b>\n\n"
             end
-            relationship.children.each do |child|
+            relationship.children.order("kbn ASC").each do |child|
               text << print_person(child) + "\n"
             end
           end
