@@ -42,6 +42,7 @@ gem 'rolify'
 gem 'chronic'
 gem 'ordinalize'
 
+gem 'figaro'
 gem 'launchy'
 
 group :production do
@@ -74,5 +75,3 @@ group :development do
   gem 'meta_request'
   gem 'letter_opener'
 end
-
-gem 'dotenv-rails'
