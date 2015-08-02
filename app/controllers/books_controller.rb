@@ -41,9 +41,9 @@ class BooksController < AuthenticatedController
       partner = Person.where(id: relationship.partner_ids).where.not(id: root.id).first rescue nil
       unless partner.nil?
         if root.relationships.count > 1
-          generation_text << "<b>Children of #{root.name}(#{root.kbn}) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+          generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
         else
-          generation_text << "<b>Children of #{root.name}(#{root.kbn}) and #{partner.name}:</b>\n\n"
+          generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{partner.name}:</b>\n\n"
         end
         relationship.children.each do |child|
           generation_text << print_person(child) + "\n"
@@ -87,9 +87,9 @@ class BooksController < AuthenticatedController
           partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first rescue nil
           unless partner.nil?
             if person.relationships.count > 1
-              text << "<b>Children of #{person.name}(#{person.kbn}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+              text << "<b>Children of #{person.name} (#{person.kbn}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
             else
-              text << "<b>Children of #{person.name}(#{person.kbn}) and #{partner.name}:</b>\n\n"
+              text << "<b>Children of #{person.name} (#{person.kbn}) and #{partner.name}:</b>\n\n"
             end
             relationship.children.each do |child|
               text << print_person(child) + "\n"
