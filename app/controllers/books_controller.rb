@@ -125,24 +125,33 @@ class BooksController < AuthenticatedController
         person_text << "\n" unless index == 0
       end
 
-      if person.descendents.count > 0
-        person_text << "\n#{person.descendents.count} Total descendants"
-        if person.greatgrandchildren(1).count > 0
-          person_text << "\n#{person.greatgrandchildren(1).count} Children"
-          if person.greatgrandchildren(2).count > 0
-            person_text << "\n#{person.greatgrandchildren(2).count} Grandchildren"
-            if person.greatgrandchildren(3).count > 0
-              person_text << "\n#{person.greatgrandchildren(3).count} Great grandchildren"
-              if person.greatgrandchildren(4).count > 0
-                person_text << "\n#{person.greatgrandchildren(4).count} Great great grandchildren"
-                if person.greatgrandchildren(5).count > 0
-                  person_text << "\n#{person.greatgrandchildren(5).count} Great great great grandchildren"
-                  if person.greatgrandchildren(6).count > 0
-                    person_text << "\n#{person.greatgrandchildren(6).count} Great great great great grandchildren"
-                    if person.greatgrandchildren(7).count > 0
-                      person_text << "\n#{person.greatgrandchildren(7).count} Great great great great great grandchildren"
-                      if person.greatgrandchildren(8).count > 0
-                        person_text << "\n#{person.greatgrandchildren(8).count} Great great great great great great grandchildren"
+      count = person.descendents.count
+      if count > 0
+        person_text << "\n#{count} Total descendants"
+        count = person.greatgrandchildren(1).count
+        if count > 0
+          person_text << "\n#{count} Children"
+          count = person.greatgrandchildren(2).count
+          if count > 0
+            person_text << "\n#{count} Grandchildren"
+            count = person.greatgrandchildren(3).count
+            if count > 0
+              person_text << "\n#{count} Great grandchildren"
+              count = person.greatgrandchildren(4).count
+              if count > 0
+                person_text << "\n#{count} Great great grandchildren"
+                count = person.greatgrandchildren(5).count
+                if count > 0
+                  person_text << "\n#{count} Great great great grandchildren"
+                  count = person.greatgrandchildren(6).count
+                  if count > 0
+                    person_text << "\n#{count} Great great great great grandchildren"
+                    count = person.greatgrandchildren(7).count
+                    if count > 0
+                      person_text << "\n#{count} Great great great great great grandchildren"
+                      count = person.greatgrandchildren(8).count
+                      if count > 0
+                        person_text << "\n#{count} Great great great great great great grandchildren"
                       end
                     end
                   end
