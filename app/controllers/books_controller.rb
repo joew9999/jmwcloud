@@ -110,7 +110,7 @@ class BooksController < AuthenticatedController
 
     def print_person(person)
       person_text = ''
-      person_text << "#{person.kbn}         #{person.name}#{date_text(person, true)}."
+      person_text << "#{person.kbn}         #{person.name}, #{date_text(person, true)}."
       person.relationships.each_with_index do |relationship, index|
         child_count = relationship.children.count
         partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
@@ -184,7 +184,7 @@ class BooksController < AuthenticatedController
       end
       date_text += born_text unless born_text.nil?
       date_text += "; #{death_text}" unless death_text.nil?
-      date_text = ", #{date_text}" if date_text != ''
+      date_text = "#{date_text}" if date_text != ''
       date_text
     end
 end
