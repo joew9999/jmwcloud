@@ -74,4 +74,5 @@ group :development do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'letter_opener'
+  gem 'quiet_assets'
 end
