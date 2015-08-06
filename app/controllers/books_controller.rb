@@ -47,7 +47,7 @@ class BooksController < AuthenticatedController
           else
             generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{partner.name}:</b>\n\n"
           end
-          relationship.children.each do |child|
+          relationship.children.order("kbn ASC").each do |child|
             generation_text << print_person(child) + "\n"
           end
         end
@@ -59,7 +59,7 @@ class BooksController < AuthenticatedController
     pdf.start_new_page
 
 ##### THIRD GENERATION #####
-    generation_text = print_generation(root.children, '', 3)
+    generation_text = print_generation(root.children.order("kbn ASC"), '', 3)
 
     pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
       pdf.text generation_text, inline_format: true
@@ -102,7 +102,7 @@ class BooksController < AuthenticatedController
             end
           end
         end
-        children = children + person.greatgrandchildren(1)
+        children = children + person.greatgrandchildren(1).order("kbn ASC")
       end
       text = print_generation(children, text, (generation + 1)) if generation < 11
       text
