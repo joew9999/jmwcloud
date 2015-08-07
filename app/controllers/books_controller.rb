@@ -110,16 +110,16 @@ class BooksController < AuthenticatedController
 
     def print_person(person)
       person_text = ''
-      person_text << "#{person.kbn}         #{person.name}, #{date_text(person, true)}."
+      person_text << "#{person.kbn}         #{person.name}, #{date_text(person, true, nil)}."
       person.relationships.each_with_index do |relationship, index|
         child_count = relationship.children.count
         partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
         marriage_date = relationship.marriage_day
         divorced = (relationship.divorce_day.nil?)? false : true
         if index == 0
-          person_text << " Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner, false)}"
+          person_text << "  Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner, false, relationship.divorce_day)}"
         else
-          person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false)}"
+          person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false, relationship.divorce_day)}"
         end
         person_text << "; #{child_count} #{(child_count > 1)? 'children' : 'child'} by this union." if person.partners.count > 1
         person_text << "\n" unless index == 0
@@ -166,25 +166,25 @@ class BooksController < AuthenticatedController
       person_text + "\n"
     end
 
-    def date_text(person, show_location)
+    def date_text(person, show_location, divorce_day)
       date_text = ""
-      if !person.birth_day.blank?
+      if person.birth_day.present?
         born_text = "born #{person.birth_day}"
         if show_location
           born_text += ", " if born_text != "born "
           born_text += "in #{person.birth_place}" if !person.birth_place.blank?
         end
       end
-      if !person.death_day.blank?
+      if person.death_day.present?
         death_text = "died #{person.death_day}"
         if show_location
           death_text += ", " if death_text != "died "
           death_text += "buried #{person.death_place}" if !person.death_place.blank?
         end
       end
-      date_text += born_text unless born_text.nil?
-      date_text += "; #{death_text}" unless death_text.nil?
-      date_text = "#{date_text}" if date_text != ''
+      date_text += born_text if born_text.present?
+      date_text += "; #{death_text}" if death_text.present?
+      date_text += "; #{divorce_day}" if divorce_day.present?
       date_text
     end
 end
