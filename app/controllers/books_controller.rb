@@ -170,16 +170,16 @@ class BooksController < AuthenticatedController
       date_text = ""
       if person.birth_day.present?
         born_text = "born #{person.birth_day}"
-        if show_location
+        if show_location && person.birth_place.present?
           born_text += ", " if born_text != "born "
-          born_text += "in #{person.birth_place}" if !person.birth_place.blank?
+          born_text += "#{person.birth_place}"
         end
       end
       if person.death_day.present?
         death_text = "died #{person.death_day}"
-        if show_location
+        if show_location && person.death_place.present?
           death_text += ", " if death_text != "died "
-          death_text += "buried #{person.death_place}" if !person.death_place.blank?
+          death_text += "buried #{person.death_place}"
         end
       end
       date_text += born_text if born_text.present?
