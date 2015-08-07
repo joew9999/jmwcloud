@@ -121,7 +121,7 @@ class BooksController < AuthenticatedController
         else
           person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false, relationship.divorce_day)}"
         end
-        person_text << "; #{child_count} #{(child_count > 1)? 'children' : 'child'} by this union." if person.partners.count > 1
+        person_text << "; #{child_count} #{pluralize(child_count, 'child')} by this union." if person.partners.count > 1
         person_text << "\n" unless index == 0
       end
 
