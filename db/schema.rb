@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150704043737) do
+ActiveRecord::Schema.define(version: 20150814140531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,24 +28,41 @@ ActiveRecord::Schema.define(version: 20150704043737) do
 
   create_table "people", force: true do |t|
     t.string   "first_name"
-    t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "male",             default: false
+    t.boolean  "male",               default: false
     t.string   "suffix"
     t.string   "birth_day"
     t.string   "birth_place"
     t.string   "death_day"
     t.string   "death_place"
-    t.string   "kbn"
-    t.text     "relationship_ids", default: [],    array: true
-    t.text     "children_ids",     default: [],    array: true
+    t.text     "relationship_ids",   default: [],    array: true
+    t.text     "children_ids",       default: [],    array: true
+    t.string   "pages",              default: [],    array: true
+    t.string   "last_names",         default: [],    array: true
+    t.string   "kbns",               default: [],    array: true
+    t.string   "first_generation",   default: [],    array: true
+    t.string   "second_generation",  default: [],    array: true
+    t.string   "third_generation",   default: [],    array: true
+    t.string   "fourth_generation",  default: [],    array: true
+    t.string   "fifth_generation",   default: [],    array: true
+    t.string   "sixth_generation",   default: [],    array: true
+    t.string   "seventh_generation", default: [],    array: true
+    t.string   "eighth_generation",  default: [],    array: true
   end
 
+  add_index "people", ["eighth_generation"], name: "index_people_on_eighth_generation", using: :btree
+  add_index "people", ["fifth_generation"], name: "index_people_on_fifth_generation", using: :btree
+  add_index "people", ["first_generation"], name: "index_people_on_first_generation", using: :btree
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
-  add_index "people", ["kbn"], name: "index_people_on_kbn", using: :btree
-  add_index "people", ["last_name"], name: "index_people_on_last_name", using: :btree
+  add_index "people", ["fourth_generation"], name: "index_people_on_fourth_generation", using: :btree
+  add_index "people", ["kbns"], name: "index_people_on_kbns", using: :btree
+  add_index "people", ["last_names"], name: "index_people_on_last_names", using: :btree
   add_index "people", ["male"], name: "index_people_on_male", using: :btree
+  add_index "people", ["second_generation"], name: "index_people_on_second_generation", using: :btree
+  add_index "people", ["seventh_generation"], name: "index_people_on_seventh_generation", using: :btree
+  add_index "people", ["sixth_generation"], name: "index_people_on_sixth_generation", using: :btree
+  add_index "people", ["third_generation"], name: "index_people_on_third_generation", using: :btree
 
   create_table "relationships", force: true do |t|
     t.datetime "created_at"
