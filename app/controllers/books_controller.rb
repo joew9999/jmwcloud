@@ -1,4 +1,5 @@
 require 'prawn'
+include ActionView::Helpers::TextHelper
 
 class BooksController < AuthenticatedController
   def index
@@ -121,37 +122,37 @@ class BooksController < AuthenticatedController
         else
           person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false, relationship.divorce_day)}"
         end
-        person_text << "; #{child_count} #{pluralize(child_count, 'child')} by this union." if person.partners.count > 1
+        person_text << "; #{pluralize(child_count, 'child')} by this union." if person.partners.count > 1
         person_text << "\n" unless index == 0
       end
 
       count = person.descendents.count
       if count > 0
-        person_text << "\n#{count} Total descendants"
+        person_text << "\n#{count} Total #{'descendant'.pluralize(count)}"
         count = person.greatgrandchildren(1).count
         if count > 0
-          person_text << "\n#{count} Children"
+          person_text << "\n#{pluralize(count, 'child').titleize}"
           count = person.greatgrandchildren(2).count
           if count > 0
-            person_text << "\n#{count} Grandchildren"
+            person_text << "\n#{pluralize(count, 'grandchild').titleize}"
             count = person.greatgrandchildren(3).count
             if count > 0
-              person_text << "\n#{count} Great grandchildren"
+              person_text << "\n#{count} Great #{'grandchild'.pluralize(count)}"
               count = person.greatgrandchildren(4).count
               if count > 0
-                person_text << "\n#{count} Great great grandchildren"
+                person_text << "\n#{count} Great great #{'grandchild'.pluralize(count)}"
                 count = person.greatgrandchildren(5).count
                 if count > 0
-                  person_text << "\n#{count} Great great great grandchildren"
+                  person_text << "\n#{count} Great great great #{'grandchild'.pluralize(count)}"
                   count = person.greatgrandchildren(6).count
                   if count > 0
-                    person_text << "\n#{count} Great great great great grandchildren"
+                    person_text << "\n#{count} Great great great great #{'grandchild'.pluralize(count)}"
                     count = person.greatgrandchildren(7).count
                     if count > 0
-                      person_text << "\n#{count} Great great great great great grandchildren"
+                      person_text << "\n#{count} Great great great great great #{'grandchild'.pluralize(count)}"
                       count = person.greatgrandchildren(8).count
                       if count > 0
-                        person_text << "\n#{count} Great great great great great great grandchildren"
+                        person_text << "\n#{count} Great great great great great great #{'grandchild'.pluralize(count)}"
                       end
                     end
                   end
