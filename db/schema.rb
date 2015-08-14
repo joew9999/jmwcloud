@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150814140531) do
+ActiveRecord::Schema.define(version: 20150814204220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,18 +51,10 @@ ActiveRecord::Schema.define(version: 20150814140531) do
     t.string   "eighth_generation",  default: [],    array: true
   end
 
-  add_index "people", ["eighth_generation"], name: "index_people_on_eighth_generation", using: :btree
-  add_index "people", ["fifth_generation"], name: "index_people_on_fifth_generation", using: :btree
-  add_index "people", ["first_generation"], name: "index_people_on_first_generation", using: :btree
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
-  add_index "people", ["fourth_generation"], name: "index_people_on_fourth_generation", using: :btree
   add_index "people", ["kbns"], name: "index_people_on_kbns", using: :btree
   add_index "people", ["last_names"], name: "index_people_on_last_names", using: :btree
   add_index "people", ["male"], name: "index_people_on_male", using: :btree
-  add_index "people", ["second_generation"], name: "index_people_on_second_generation", using: :btree
-  add_index "people", ["seventh_generation"], name: "index_people_on_seventh_generation", using: :btree
-  add_index "people", ["sixth_generation"], name: "index_people_on_sixth_generation", using: :btree
-  add_index "people", ["third_generation"], name: "index_people_on_third_generation", using: :btree
 
   create_table "relationships", force: true do |t|
     t.datetime "created_at"
