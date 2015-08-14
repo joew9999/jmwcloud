@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150704043737) do
+ActiveRecord::Schema.define(version: 20150814015321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,12 +40,15 @@ ActiveRecord::Schema.define(version: 20150704043737) do
     t.string   "kbn"
     t.text     "relationship_ids", default: [],    array: true
     t.text     "children_ids",     default: [],    array: true
+    t.string   "pages",            default: [],    array: true
+    t.string   "other_names",      default: [],    array: true
   end
 
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
   add_index "people", ["kbn"], name: "index_people_on_kbn", using: :btree
   add_index "people", ["last_name"], name: "index_people_on_last_name", using: :btree
   add_index "people", ["male"], name: "index_people_on_male", using: :btree
+  add_index "people", ["other_names"], name: "index_people_on_other_names", using: :btree
 
   create_table "relationships", force: true do |t|
     t.datetime "created_at"
