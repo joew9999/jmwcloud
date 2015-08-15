@@ -295,7 +295,7 @@ class BooksController < AuthenticatedController
       end
       date_text += born_text if born_text.present?
       date_text += "; #{death_text}" if death_text.present?
-      date_text += "; #{divorce_day}" if divorce_day.present?
+      date_text += "; Divorced #{divorce_day}" if divorce_day.present?
       date_text
     end
 end
