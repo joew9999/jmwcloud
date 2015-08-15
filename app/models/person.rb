@@ -45,7 +45,7 @@ class Person < ActiveRecord::Base
     Person.where(id: self.children_ids)
   end
 
-  def descendents
+  def descendants
     count = 0
     count += self.first_generation.count
     count += self.second_generation.count

@@ -93,9 +93,9 @@ class BooksController < AuthenticatedController
             child_count = relationship.children.count
             if child_count > 0
               if person.relationships.count > 1
-                text << "<b>Children of #{person.name} (#{person.kbn.first}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+                text << "<b>Children of #{person.name} (#{person.kbns.first}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
               else
-                text << "<b>Children of #{person.name} (#{person.kbn.first}) and #{partner.name}:</b>\n\n"
+                text << "<b>Children of #{person.name} (#{person.kbns.first}) and #{partner.name}:</b>\n\n"
               end
               relationship.children.order("kbns ASC").each do |child|
                 text << print_person(child) + "\n"
@@ -126,7 +126,7 @@ class BooksController < AuthenticatedController
         person_text << "\n" unless index == 0
       end
 
-      count = person.descendents.count
+      count = person.descendants
       if count > 0
         person_text << "\n#{count} Total #{'descendant'.pluralize(count)}"
         count = person.first_generation.count
