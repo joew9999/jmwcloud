@@ -212,7 +212,7 @@ class BooksController < AuthenticatedController
 
     def print_person(person, parent_kbn)
       person_text = ''
-      person_text << "#{person.kbn_based_on_parent(parent_kbn)}         #{person.name}, #{date_text(person, true, nil)}."
+      person_text << "#{person.primary_kbn}         #{person.name}, #{date_text(person, true, nil)}."
       person.relationships.each_with_index do |relationship, index|
         child_count = relationship.children.count
         partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
