@@ -6,11 +6,15 @@ class Person < ActiveRecord::Base
   scope :female, -> { where(male: false) }
 
   def self.find_by_kbn(kbn)
-    Person.where("kbns @> '{#{kbn}}'").first
+    if kbn.nil?
+      return nil
+    else
+      return Person.where("kbns @> '{#{kbn}}'").first
+    end
   end
 
   def name
-    "#{self.first_name} #{self.last_name}"
+    "#{self.first_name} #{self.last_names.first}"
   end
 
   def relationships
@@ -42,39 +46,32 @@ class Person < ActiveRecord::Base
   end
 
   def descendents
-    people = []
-    if self.kbns.first == '0'
-      people = Person.where("kbns IS NOT NULL").where("kbns != ''").where.not(id: self.id)
-    else
-      people = Person.where("ancestors @> '{#{self.kbns.first}}'").where.not(id: self.id)
-    end
-    people
-  end
-
-  def greatgrandchildren(generation)
-    people = []
-    char_count = self.kbn.size + generation
-    if self.kbns.first == '0'
-      people = Person.where("kbns IS NOT NULL").where.not(kbns: '0').where.not(kbns: '').where("generations @> '{#{generation}}'")
-    else
-      people = Person.where("ancestors @> '{#{self.kbns.first}}'").where("kbns IS NOT NULL").where.not(kbns: '').where("generations @> '{#{char_count}}'")
-    end
-    people
+    count = 0
+    count += self.first_generation.count
+    count += self.second_generation.count
+    count += self.third_generation.count
+    count += self.fourth_generation.count
+    count += self.fifth_generation.count
+    count += self.sixth_generation.count
+    count += self.seventh_generation.count
+    count += self.eighth_generation.count
+    count
   end
 
   def self.import(csv)
+    first_time = (Person.all.count == 0)
     csv.each do |row|
-      (1..8).to_a.each do |generation|
-        self.import_row(row, generation)
+      if row['first_name'].present?
+        if first_time
+          self.import_person(row, 0)
+        else
+          (1..8).to_a.each do |generation|
+            self.import_person(row, generation)
+          end
+        end
+      else
+        self.import_child(row)
       end
-    end
-  end
-
-  def self.import_row(row, generation)
-    if row['first_name'].present?
-      self.import_person(row, generation)
-    else
-      self.import_child(row)
     end
   end
 
@@ -110,7 +107,7 @@ class Person < ActiveRecord::Base
     parent.update_parents_descendants(new_kbn, parent_kbn, generation + 1) if parent_kbn != '0'
   end
 
-  def self.import_row(row, generation)
+  def self.import_person(row, generation)
     if generation == 0 || row['KBN'].length == generation
       person = Person.find_by_kbn(row['KBN'])
       kbns = []
@@ -132,18 +129,20 @@ class Person < ActiveRecord::Base
   end
 
   def self.import_child(row)
-    person = Person.find_by_kbn(row['KBN'])
-    parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
-    if !parent.nil?
-      relationship = Relationship.find(parent.relationship_ids[(row['relationship_number'].to_i - 1)]) rescue nil
-      if !relationship.nil?
-        relationship.children_ids << person.id
-        relationship.children_ids_will_change!
-        relationship.save
+    if row['KBN'].present?
+      person = Person.find_by_kbn(row['KBN'])
+      parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
+      if !parent.nil?
+        relationship = Relationship.find(parent.relationship_ids[(row['relationship_number'].to_i - 1)]) rescue nil
+        if !relationship.nil?
+          relationship.children_ids << person.id
+          relationship.children_ids_will_change!
+          relationship.save
+        end
+        parent.children_ids << person.id
+        parent.children_ids_will_change!
+        parent.save
       end
-      parent.children_ids << person.id
-      parent.children_ids_will_change!
-      parent.save
     end
   end
 end

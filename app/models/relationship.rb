@@ -14,7 +14,8 @@ class Relationship < ActiveRecord::Base
   def self.import_row(row)
     relationship = nil
     person = Person.find_by_kbn(row['KBN'])
-    partner = Person.where(first_name: row['first_name']).where(last_name: row['last_name']).first_or_create
+    partner = Person.find_by_kbn(row['SKBN']) if row['SKBN'].present?
+    partner = Person.create({first_name: row['first_name'], last_names: [row['last_name']]}) if partner.nil?
     partner.update_attributes({birth_day: row['birth_day'], death_day: row['death_day']})
     if !person.nil? && !partner.nil?
       relationship = Relationship.create

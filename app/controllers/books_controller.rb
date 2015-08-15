@@ -44,11 +44,11 @@ class BooksController < AuthenticatedController
         child_count = relationship.children.count
         if child_count > 0
           if root.relationships.count > 1
-            generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+            generation_text << "<b>Children of #{root.name} (0) and #{(index + 1).to_i.ordinalise} #{(root.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
           else
-            generation_text << "<b>Children of #{root.name} (#{root.kbn}) and #{partner.name}:</b>\n\n"
+            generation_text << "<b>Children of #{root.name} (0) and #{partner.name}:</b>\n\n"
           end
-          relationship.children.order("kbn ASC").each do |child|
+          relationship.children.order("kbns ASC").each do |child|
             generation_text << print_person(child) + "\n"
           end
         end
@@ -60,7 +60,7 @@ class BooksController < AuthenticatedController
     pdf.start_new_page
 
 ##### THIRD GENERATION #####
-    generation_text = print_generation(root.children.order("kbn ASC"), '', 3)
+    generation_text = print_generation(root.children.order("kbns ASC"), '', 3)
 
     pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
       pdf.text generation_text, inline_format: true
@@ -93,17 +93,17 @@ class BooksController < AuthenticatedController
             child_count = relationship.children.count
             if child_count > 0
               if person.relationships.count > 1
-                text << "<b>Children of #{person.name} (#{person.kbn}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+                text << "<b>Children of #{person.name} (#{person.kbn.first}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
               else
-                text << "<b>Children of #{person.name} (#{person.kbn}) and #{partner.name}:</b>\n\n"
+                text << "<b>Children of #{person.name} (#{person.kbn.first}) and #{partner.name}:</b>\n\n"
               end
-              relationship.children.order("kbn ASC").each do |child|
+              relationship.children.order("kbns ASC").each do |child|
                 text << print_person(child) + "\n"
               end
             end
           end
         end
-        children = children + person.greatgrandchildren(1).order("kbn ASC")
+        children = children + Person.where("kbns @> '{#{person.first_generation.join(',')}}'").order("kbns ASC")
       end
       text = print_generation(children, text, (generation + 1)) if generation < 11
       text
@@ -111,7 +111,7 @@ class BooksController < AuthenticatedController
 
     def print_person(person)
       person_text = ''
-      person_text << "#{person.kbn}         #{person.name}, #{date_text(person, true, nil)}."
+      person_text << "#{person.kbns.first}         #{person.name}, #{date_text(person, true, nil)}."
       person.relationships.each_with_index do |relationship, index|
         child_count = relationship.children.count
         partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
@@ -129,28 +129,28 @@ class BooksController < AuthenticatedController
       count = person.descendents.count
       if count > 0
         person_text << "\n#{count} Total #{'descendant'.pluralize(count)}"
-        count = person.greatgrandchildren(1).count
+        count = person.first_generation.count
         if count > 0
           person_text << "\n#{pluralize(count, 'child').titleize}"
-          count = person.greatgrandchildren(2).count
+          count = person.second_generation.count
           if count > 0
             person_text << "\n#{pluralize(count, 'grandchild').titleize}"
-            count = person.greatgrandchildren(3).count
+            count = person.third_generation.count
             if count > 0
               person_text << "\n#{count} Great #{'grandchild'.pluralize(count)}"
-              count = person.greatgrandchildren(4).count
+              count = person.fourth_generation.count
               if count > 0
                 person_text << "\n#{count} Great great #{'grandchild'.pluralize(count)}"
-                count = person.greatgrandchildren(5).count
+                count = person.fifth_generation.count
                 if count > 0
                   person_text << "\n#{count} Great great great #{'grandchild'.pluralize(count)}"
-                  count = person.greatgrandchildren(6).count
+                  count = person.sixth_generation.count
                   if count > 0
                     person_text << "\n#{count} Great great great great #{'grandchild'.pluralize(count)}"
-                    count = person.greatgrandchildren(7).count
+                    count = person.seventh_generation.count
                     if count > 0
                       person_text << "\n#{count} Great great great great great #{'grandchild'.pluralize(count)}"
-                      count = person.greatgrandchildren(8).count
+                      count = person.eighth_generation.count
                       if count > 0
                         person_text << "\n#{count} Great great great great great great #{'grandchild'.pluralize(count)}"
                       end
