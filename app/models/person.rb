@@ -13,6 +13,24 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def kbn_based_on_parent(parent_kbn)
+    kbn = self.kbns.first
+    if parent_kbn.present? && parent_kbn != '0'
+      self.kbns.each do |num|
+        kbn = num if parent_kbn == num[0..-2]
+      end
+    end
+    kbn
+  end
+
+  def kbn_based_on_last_kbn(last_kbn)
+    kbn = self.kbns.first
+    self.kbns.each do |num|
+      kbn = num if (last_kbn[0..-3]) == (num[0..-3])
+    end
+    kbn
+  end
+
   def name
     "#{self.first_name} #{self.last_names.first}"
   end
@@ -43,6 +61,14 @@ class Person < ActiveRecord::Base
 
   def children
     Person.where(id: self.children_ids)
+  end
+
+  def self.children(people)
+    children = []
+    people.each do |person|
+      children = children + Person.where.overlap(kbns: person.first_generation).order("kbns ASC")
+    end
+    children
   end
 
   def descendants

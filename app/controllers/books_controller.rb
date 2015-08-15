@@ -20,23 +20,30 @@ class BooksController < AuthenticatedController
     pdf.text "STAMMVATER: Hennig Heinrich Kothmann", align: :center
     pdf.move_down 15
     pdf.text "Hennig Heinrich Kothmann and Ilse Dorothee Marwede, both born in Wedelheine, Germany (dates not available).", align: :center
+
     pdf.start_new_page
 
-    setup_font(pdf)
 ##### FIRST GENERATION #####
-    root = Person.find_by_kbn('0')
+    setup_font(pdf)
+
+    pdf.move_down 250
     pdf.text "<b>FIRST GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.move_down 13
+    pdf.start_new_page
+
+    root = Person.find_by_kbn('0')
     generation_text = ''
-    generation_text << print_person(root) + "\n"
+    generation_text << print_person(root, nil) + "\n"
     pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
       pdf.text generation_text, inline_format: true
     end
     pdf.start_new_page
 
 ##### SECOND GENERATION #####
+
+    pdf.move_down 250
     pdf.text "<b>SECOND GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.move_down 13
+    pdf.start_new_page
+
     generation_text = ''
     root.relationships.each_with_index do |relationship, index|
       partner = Person.where(id: relationship.partner_ids).where.not(id: root.id).first rescue nil
@@ -49,7 +56,7 @@ class BooksController < AuthenticatedController
             generation_text << "<b>Children of #{root.name} (0) and #{partner.name}:</b>\n\n"
           end
           relationship.children.order("kbns ASC").each do |child|
-            generation_text << print_person(child) + "\n"
+            generation_text << print_person(child, '0') + "\n"
           end
         end
       end
@@ -60,13 +67,107 @@ class BooksController < AuthenticatedController
     pdf.start_new_page
 
 ##### THIRD GENERATION #####
-    generation_text = print_generation(root.children.order("kbns ASC"), '', 3)
+
+    children = root.children.order("kbns ASC")
+    generation_text = print_generation(children)
+
+    pdf.move_down 250
+    pdf.text "<b>THIRD GENERATION IN TEXAS</b>", align: :center, inline_format: true
+    pdf.start_new_page
 
     pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
       pdf.text generation_text, inline_format: true
     end
+    pdf.start_new_page
+
+##### FOURTH GENERATION #####
+
+    children = Person.children(children)
+    generation_text = print_generation(children)
+
+    pdf.move_down 250
+    pdf.text "<b>FOURTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
+    pdf.start_new_page
+
+    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
+      pdf.text generation_text, inline_format: true
+    end
+    pdf.start_new_page
+
+##### FIFTH GENERATION #####
+
+    children = Person.children(children)
+    generation_text = print_generation(children)
+
+    pdf.move_down 250
+    pdf.text "<b>FIFTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
+    pdf.start_new_page
+
+    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
+      pdf.text generation_text, inline_format: true
+    end
+    pdf.start_new_page
+
+##### SIXTH GENERATION #####
+
+    children = Person.children(children)
+    generation_text = print_generation(children)
+
+    pdf.move_down 250
+    pdf.text "<b>SIXTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
+    pdf.start_new_page
+
+    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
+      pdf.text generation_text, inline_format: true
+    end
+    pdf.start_new_page
+
+##### SEVENTH GENERATION #####
+
+    children = Person.children(children)
+    generation_text = print_generation(children)
+
+    pdf.move_down 250
+    pdf.text "<b>SEVENTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
+    pdf.start_new_page
+
+    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
+      pdf.text generation_text, inline_format: true
+    end
+    pdf.start_new_page
+
+##### EIGHTH GENERATION #####
+
+    children = Person.children(children)
+    generation_text = print_generation(children)
+
+    pdf.move_down 250
+    pdf.text "<b>EIGHTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
+    pdf.start_new_page
+
+    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
+      pdf.text generation_text, inline_format: true
+    end
+    pdf.start_new_page
+
+##### NINTH GENERATION #####
+
+    children = Person.children(children)
+    if children.any?
+      generation_text = print_generation(children)
+
+      pdf.move_down 250
+      pdf.text "<b>NINTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
+      pdf.start_new_page
+
+      pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
+        pdf.text generation_text, inline_format: true
+      end
+      pdf.start_new_page
+    end
 
 ##### PRINT #####
+
     pdf.number_pages "<page>", { at: [pdf.bounds.right - 50, 0], width: 50, align: :right, start_count_at: 1 }
     pdf.render_file "app/assets/exports/pdfs/family_registry.pdf"
   end
@@ -83,35 +184,38 @@ class BooksController < AuthenticatedController
       pdf.font_size 10
     end
 
-    def print_generation(people, text, generation)
-      children = []
-      text << "<b>#{generation.ordinalise.upcase} GENERATION IN TEXAS</b>\n\n"
+    def print_generation(people)
+      text = ''
+      last_kbn = ''
       people.each do |person|
+        if last_kbn = ''
+          kbn = last_kbn = person.kbns.first
+        else
+          kbn = last_kbn = person.kbn_based_on_last_kbn(last_kbn)
+        end
         person.relationships.each_with_index do |relationship, index|
           partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first rescue nil
           unless partner.nil?
             child_count = relationship.children.count
             if child_count > 0
               if person.relationships.count > 1
-                text << "<b>Children of #{person.name} (#{person.kbns.first}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
+                text << "<b>Children of #{person.name} (#{kbn}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
               else
-                text << "<b>Children of #{person.name} (#{person.kbns.first}) and #{partner.name}:</b>\n\n"
+                text << "<b>Children of #{person.name} (#{kbn}) and #{partner.name}:</b>\n\n"
               end
               relationship.children.order("kbns ASC").each do |child|
-                text << print_person(child) + "\n"
+                text << print_person(child, kbn) + "\n"
               end
             end
           end
         end
-        children = children + Person.where.overlap(kbns: person.first_generation).order("kbns ASC")
       end
-      text = print_generation(children, text, (generation + 1)) if generation < 10
       text
     end
 
-    def print_person(person)
+    def print_person(person, parent_kbn)
       person_text = ''
-      person_text << "#{person.kbns.first}         #{person.name}, #{date_text(person, true, nil)}."
+      person_text << "#{person.kbn_based_on_parent(parent_kbn)}         #{person.name}, #{date_text(person, true, nil)}."
       person.relationships.each_with_index do |relationship, index|
         child_count = relationship.children.count
         partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
