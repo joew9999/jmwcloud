@@ -32,7 +32,7 @@ class Person < ActiveRecord::Base
   end
 
   def name
-    "#{self.first_name} #{self.last_names.first}"
+    "#{self.first_name} #{self.last_names.first}#{(self.suffix.present?)? ', ' + self.suffix : ''}"
   end
 
   def relationships
