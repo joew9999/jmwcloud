@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150814204220) do
+ActiveRecord::Schema.define(version: 20150815174734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,12 +49,14 @@ ActiveRecord::Schema.define(version: 20150814204220) do
     t.string   "sixth_generation",   default: [],    array: true
     t.string   "seventh_generation", default: [],    array: true
     t.string   "eighth_generation",  default: [],    array: true
+    t.string   "primary_kbn"
   end
 
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
   add_index "people", ["kbns"], name: "index_people_on_kbns", using: :btree
   add_index "people", ["last_names"], name: "index_people_on_last_names", using: :btree
   add_index "people", ["male"], name: "index_people_on_male", using: :btree
+  add_index "people", ["primary_kbn"], name: "index_people_on_primary_kbn", using: :btree
 
   create_table "relationships", force: true do |t|
     t.datetime "created_at"

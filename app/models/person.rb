@@ -140,7 +140,7 @@ class Person < ActiveRecord::Base
       kbns << row['KBN'] if row['KBN'].present?
       kbns << row['KBN1'] if row['KBN1'].present?
       kbns << row['KBN2'] if row['KBN2'].present?
-      person_values = {kbns: kbns, first_name: row['first_name'], last_names: [row['last_name']], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false), birth_day: row['birth_day'], birth_place: row['birth_place'], death_day: row['death_day'], death_place: row['death_place']}
+      person_values = {primary_kbn: row['KBN'], kbns: kbns, first_name: row['first_name'], last_names: [row['last_name']], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false), birth_day: row['birth_day'], birth_place: row['birth_place'], death_day: row['death_day'], death_place: row['death_place']}
       if person.nil?
         person = Person.create(person_values)
       else
