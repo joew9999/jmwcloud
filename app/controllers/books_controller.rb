@@ -218,12 +218,21 @@ class BooksController < AuthenticatedController
         partner = Person.where(id: relationship.partner_ids).where.not(id: person.id).first
         marriage_date = relationship.marriage_day
         divorced = (relationship.divorce_day.nil?)? false : true
+        partner_kbn = (partner.primary_kbn.present?)? " (#{partner.primary_kbn})" : ''
         if index == 0
-          person_text << "  Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}, #{date_text(partner, false, relationship.divorce_day)}"
+          person_text << "  Married #{(person.partners.count > 1)? (index + 1).ordinalise + ' ' : ''}#{(marriage_date.nil?)? '' : "in #{marriage_date} "}to:\n#{(divorced)? '**' : '*'}#{partner.name}#{partner_kbn}, #{date_text(partner, false, relationship.divorce_day)}"
         else
-          person_text << "\n#{(divorced)? '**' : '*'}#{partner.name} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false, relationship.divorce_day)}"
+          person_text << "\n#{(divorced)? '**' : '*'}#{partner.name}#{partner_kbn} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false, relationship.divorce_day)}"
         end
         person_text << "; #{pluralize(child_count, 'child')} by this union." if person.partners.count > 1
+        if person.primary_kbn.present? && partner.primary_kbn.present?
+          child_kbn_root = relationship.children.first.primary_kbn[0..-2]
+          if child_kbn_root == person.primary_kbn
+            person_text << "\nAll children listed under #{person.name}'s KBN."
+          else
+            person_text << "\nAll children listed under #{partner.name}'s KBN."
+          end
+        end
         person_text << "\n" unless index == 0
       end
 
