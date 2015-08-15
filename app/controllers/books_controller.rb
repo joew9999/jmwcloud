@@ -224,7 +224,8 @@ class BooksController < AuthenticatedController
         else
           person_text << "\n#{(divorced)? '**' : '*'}#{partner.name}#{partner_kbn} married #{(person.male)? 'him' : 'her'} #{(marriage_date.nil?)? '' : "in #{marriage_date}"}; #{date_text(partner, false, relationship.divorce_day)}"
         end
-        person_text << "; #{pluralize(child_count, 'child')} by this union." if person.partners.count > 1
+        person_text << "; #{pluralize(child_count, 'child')} by this union" if person.partners.count > 1
+        person_text << '.'
         if person.primary_kbn.present? && partner.primary_kbn.present?
           child_kbn_root = relationship.children.first.primary_kbn[0..-2]
           if child_kbn_root == person.primary_kbn
@@ -239,28 +240,28 @@ class BooksController < AuthenticatedController
       count = person.descendants
       if count > 0
         person_text << "\n#{count} Total #{'descendant'.pluralize(count)}"
-        count = Person.where.overlap(kbns: person.first_generation).uniq.count
+        count = Person.where.overlap(kbns: person.first_generation).where("LENGTH(primary_kbn) = 1").uniq.count
         if count > 0
           person_text << "\n#{pluralize(count, 'child').titleize}"
-          count = Person.where.overlap(kbns: person.second_generation).uniq.count
+          count = Person.where.overlap(kbns: person.second_generation).where("LENGTH(primary_kbn) = 2").uniq.count
           if count > 0
             person_text << "\n#{pluralize(count, 'grandchild').titleize}"
-            count = Person.where.overlap(kbns: person.third_generation).uniq.count
+            count = Person.where.overlap(kbns: person.third_generation).where("LENGTH(primary_kbn) = 3").uniq.count
             if count > 0
               person_text << "\n#{count} Great #{'grandchild'.pluralize(count)}"
-              count = Person.where.overlap(kbns: person.fourth_generation).uniq.count
+              count = Person.where.overlap(kbns: person.fourth_generation).where("LENGTH(primary_kbn) = 4").uniq.count
               if count > 0
                 person_text << "\n#{count} Great great #{'grandchild'.pluralize(count)}"
-                count = Person.where.overlap(kbns: person.fifth_generation).uniq.count
+                count = Person.where.overlap(kbns: person.fifth_generation).where("LENGTH(primary_kbn) = 5").uniq.count
                 if count > 0
                   person_text << "\n#{count} Great great great #{'grandchild'.pluralize(count)}"
-                  count = Person.where.overlap(kbns: person.sixth_generation).uniq.count
+                  count = Person.where.overlap(kbns: person.sixth_generation).where("LENGTH(primary_kbn) = 6").uniq.count
                   if count > 0
                     person_text << "\n#{count} Great great great great #{'grandchild'.pluralize(count)}"
-                    count = Person.where.overlap(kbns: person.seventh_generation).uniq.count
+                    count = Person.where.overlap(kbns: person.seventh_generation).where("LENGTH(primary_kbn) = 7").uniq.count
                     if count > 0
                       person_text << "\n#{count} Great great great great great #{'grandchild'.pluralize(count)}"
-                      count = Person.where.overlap(kbns: person.eighth_generation).uniq.count
+                      count = Person.where.overlap(kbns: person.eighth_generation).where("LENGTH(primary_kbn) = 8").uniq.count
                       if count > 0
                         person_text << "\n#{count} Great great great great great great #{'grandchild'.pluralize(count)}"
                       end
