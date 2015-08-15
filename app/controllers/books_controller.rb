@@ -103,9 +103,9 @@ class BooksController < AuthenticatedController
             end
           end
         end
-        children = children + Person.where("kbns @> '{#{person.first_generation.join(',')}}'").order("kbns ASC")
+        children = children + Person.where.overlap(kbns: person.first_generation).order("kbns ASC")
       end
-      text = print_generation(children, text, (generation + 1)) if generation < 11
+      text = print_generation(children, text, (generation + 1)) if generation < 10
       text
     end
 

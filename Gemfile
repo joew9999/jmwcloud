@@ -3,6 +3,7 @@ ruby "2.2.2"
 
 gem 'rails', '4.1.1'
 gem 'pg'
+gem 'postgres_ext'
 
 gem 'rest-client'
 
