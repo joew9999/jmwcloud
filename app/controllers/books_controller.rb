@@ -287,6 +287,12 @@ class BooksController < AuthenticatedController
           born_text += "#{person.birth_place}"
         end
       end
+      if person.adopted_day.present?
+        adoption_text = "adopted #{person.adopted_day}"
+        if person.adoption_text.present?
+          adoption_text << ", #{person.adoption_text}"
+        end
+      end
       if person.death_day.present?
         death_text = "died #{person.death_day}"
         if show_location && person.death_place.present?
@@ -295,6 +301,7 @@ class BooksController < AuthenticatedController
         end
       end
       date_text += born_text if born_text.present?
+      date_text += "; #{adoption_text}" if adoption_text.present?
       date_text += "; #{death_text}" if death_text.present?
       date_text += "; Divorced #{divorce_day}" if divorce_day.present?
       date_text

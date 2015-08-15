@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150815174734) do
+ActiveRecord::Schema.define(version: 20150815221231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,9 @@ ActiveRecord::Schema.define(version: 20150815174734) do
     t.string   "seventh_generation", default: [],    array: true
     t.string   "eighth_generation",  default: [],    array: true
     t.string   "primary_kbn"
+    t.string   "adopted_day"
+    t.string   "adoption_text"
+    t.string   "adoption_type"
   end
 
   add_index "people", ["first_name"], name: "index_people_on_first_name", using: :btree
