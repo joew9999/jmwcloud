@@ -2,9 +2,6 @@ require 'prawn'
 include ActionView::Helpers::TextHelper
 
 class BooksController < AuthenticatedController
-  def index
-  end
-
   def create
     pdf = Prawn::Document.new
     setup_font(pdf)
@@ -233,28 +230,28 @@ class BooksController < AuthenticatedController
       count = person.descendants
       if count > 0
         person_text << "\n#{count} Total #{'descendant'.pluralize(count)}"
-        count = person.first_generation.count
+        count = Person.where.overlap(kbns: person.first_generation).uniq.count
         if count > 0
           person_text << "\n#{pluralize(count, 'child').titleize}"
-          count = person.second_generation.count
+          count = Person.where.overlap(kbns: person.second_generation).uniq.count
           if count > 0
             person_text << "\n#{pluralize(count, 'grandchild').titleize}"
-            count = person.third_generation.count
+            count = Person.where.overlap(kbns: person.third_generation).uniq.count
             if count > 0
               person_text << "\n#{count} Great #{'grandchild'.pluralize(count)}"
-              count = person.fourth_generation.count
+              count = Person.where.overlap(kbns: person.fourth_generation).uniq.count
               if count > 0
                 person_text << "\n#{count} Great great #{'grandchild'.pluralize(count)}"
-                count = person.fifth_generation.count
+                count = Person.where.overlap(kbns: person.fifth_generation).uniq.count
                 if count > 0
                   person_text << "\n#{count} Great great great #{'grandchild'.pluralize(count)}"
-                  count = person.sixth_generation.count
+                  count = Person.where.overlap(kbns: person.sixth_generation).uniq.count
                   if count > 0
                     person_text << "\n#{count} Great great great great #{'grandchild'.pluralize(count)}"
-                    count = person.seventh_generation.count
+                    count = Person.where.overlap(kbns: person.seventh_generation).uniq.count
                     if count > 0
                       person_text << "\n#{count} Great great great great great #{'grandchild'.pluralize(count)}"
-                      count = person.eighth_generation.count
+                      count = Person.where.overlap(kbns: person.eighth_generation).uniq.count
                       if count > 0
                         person_text << "\n#{count} Great great great great great great #{'grandchild'.pluralize(count)}"
                       end

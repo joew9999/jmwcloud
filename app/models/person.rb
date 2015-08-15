@@ -66,22 +66,22 @@ class Person < ActiveRecord::Base
   def self.children(people)
     children = []
     people.each do |person|
-      children = children + Person.where.overlap(kbns: person.first_generation).order("kbns ASC")
+      children = children + Person.where(primary_kbn: person.first_generation).order(:primary_kbn)
     end
     children
   end
 
   def descendants
-    count = 0
-    count += self.first_generation.count
-    count += self.second_generation.count
-    count += self.third_generation.count
-    count += self.fourth_generation.count
-    count += self.fifth_generation.count
-    count += self.sixth_generation.count
-    count += self.seventh_generation.count
-    count += self.eighth_generation.count
-    count
+    descendant_kbns = []
+    descendant_kbns += self.first_generation
+    descendant_kbns += self.second_generation
+    descendant_kbns += self.third_generation
+    descendant_kbns += self.fourth_generation
+    descendant_kbns += self.fifth_generation
+    descendant_kbns += self.sixth_generation
+    descendant_kbns += self.seventh_generation
+    descendant_kbns += self.eighth_generation
+    Person.where.overlap(kbns: descendant_kbns).uniq.count
   end
 
   def self.import(csv)
