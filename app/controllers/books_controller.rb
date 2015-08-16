@@ -21,11 +21,8 @@ class BooksController < AuthenticatedController
     pdf.start_new_page
 
 ##### FIRST GENERATION #####
-    setup_font(pdf)
 
-    pdf.move_down 250
-    pdf.text "<b>FIRST GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.start_new_page
+    print_generation_header(pdf, 1)
 
     root = Person.find_by_kbn('0')
     generation_text = ''
@@ -37,9 +34,7 @@ class BooksController < AuthenticatedController
 
 ##### SECOND GENERATION #####
 
-    pdf.move_down 250
-    pdf.text "<b>SECOND GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.start_new_page
+    print_generation_header(pdf, 2)
 
     generation_text = ''
     root.relationships.each_with_index do |relationship, index|
@@ -63,105 +58,15 @@ class BooksController < AuthenticatedController
     end
     pdf.start_new_page
 
-##### THIRD GENERATION #####
+##### THIRD - NINTH GENERATION #####
 
-    children = root.children.order("kbns ASC")
-    generation_text = print_generation(children)
-
-    pdf.move_down 250
-    pdf.text "<b>THIRD GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.start_new_page
-
-    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
-      pdf.text generation_text, inline_format: true
-    end
-    pdf.start_new_page
-
-##### FOURTH GENERATION #####
-
-    children = Person.children(children)
-    generation_text = print_generation(children)
-
-    pdf.move_down 250
-    pdf.text "<b>FOURTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.start_new_page
-
-    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
-      pdf.text generation_text, inline_format: true
-    end
-    pdf.start_new_page
-
-##### FIFTH GENERATION #####
-
-    children = Person.children(children)
-    generation_text = print_generation(children)
-
-    pdf.move_down 250
-    pdf.text "<b>FIFTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.start_new_page
-
-    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
-      pdf.text generation_text, inline_format: true
-    end
-    pdf.start_new_page
-
-##### SIXTH GENERATION #####
-
-    children = Person.children(children)
-    generation_text = print_generation(children)
-
-    pdf.move_down 250
-    pdf.text "<b>SIXTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.start_new_page
-
-    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
-      pdf.text generation_text, inline_format: true
-    end
-    pdf.start_new_page
-
-##### SEVENTH GENERATION #####
-
-    children = Person.children(children)
-    generation_text = print_generation(children)
-
-    pdf.move_down 250
-    pdf.text "<b>SEVENTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.start_new_page
-
-    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
-      pdf.text generation_text, inline_format: true
-    end
-    pdf.start_new_page
-
-##### EIGHTH GENERATION #####
-
-    children = Person.children(children)
-    generation_text = print_generation(children)
-
-    pdf.move_down 250
-    pdf.text "<b>EIGHTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
-    pdf.start_new_page
-
-    pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
-      pdf.text generation_text, inline_format: true
-    end
-    pdf.start_new_page
-
-##### NINTH GENERATION #####
-
-    children = Person.children(children)
-    if children.any?
-      generation_text = print_generation(children)
-
-      pdf.move_down 250
-      pdf.text "<b>NINTH GENERATION IN TEXAS</b>", align: :center, inline_format: true
-      pdf.start_new_page
-
-      pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
-        pdf.text generation_text, inline_format: true
-      end
-      pdf.start_new_page
-    end
+    children = generate_generation(pdf, Person.where(id: root.id), 3)
+    children = generate_generation(pdf, children, 4)
+    children = generate_generation(pdf, children, 5)
+    children = generate_generation(pdf, children, 6)
+    children = generate_generation(pdf, children, 7)
+    children = generate_generation(pdf, children, 8)
+    children = generate_generation(pdf, children, 9)
 
 ##### PRINT #####
 
@@ -179,6 +84,42 @@ class BooksController < AuthenticatedController
       }
       pdf.font("Palatino")
       pdf.font_size 10
+    end
+
+    def generate_generation(pdf, children, number)
+      children = Person.children(children)
+      if children.any?
+        generation_text = print_generation(children)
+
+        print_generation_header(pdf, number)
+
+        pdf.column_box([0, pdf.cursor], columns: 2, width: pdf.bounds.width) do
+          pdf.text generation_text, inline_format: true
+        end
+        pdf.start_new_page
+      end
+      children
+    end
+
+    def print_generation_header(pdf, number)
+      pdf.start_new_page if (pdf.page_number % 2) == 0
+      pdf.font_families["Beckett"] = {
+        normal: {file: Rails.root + "app/assets/fonts/Beckett.ttf", font: "Beckett" }
+      }
+      pdf.font("Beckett")
+      pdf.font_size 44
+
+      pdf.move_down 150
+      pdf.text "Chapter #{number}", align: :center, inline_format: true
+      pdf.move_down 50
+      pdf.text number.ordinalise.titleize, align: :center, inline_format: true
+      pdf.move_down 10
+      pdf.text 'Generation', align: :center, inline_format: true
+      pdf.move_down 50
+      logo = Rails.root + "app/assets/images/logo_bw.png"
+      pdf.image logo, :scale => 0.22, position: :center
+      pdf.start_new_page
+      setup_font(pdf)
     end
 
     def print_generation(people)
@@ -297,28 +238,28 @@ class BooksController < AuthenticatedController
       count = person.descendants
       if count > 0
         person_text << "\n#{count} Total #{'descendant'.pluralize(count)}"
-        count = Person.where.overlap(kbns: person.first_generation).where("LENGTH(primary_kbn) = 1").uniq.count
+        count = Person.where.overlap(kbns: person.first_generation).where("LENGTH(primary_kbn) = #{((person.primary_kbn == '0')? 0 : person.primary_kbn.length) + 1}").uniq.count
         if count > 0
           person_text << "\n#{pluralize(count, 'child').titleize}"
-          count = Person.where.overlap(kbns: person.second_generation).where("LENGTH(primary_kbn) = 2").uniq.count
+          count = Person.where.overlap(kbns: person.second_generation).where("LENGTH(primary_kbn) = #{((person.primary_kbn == '0')? 0 : person.primary_kbn.length) + 2}").uniq.count
           if count > 0
             person_text << "\n#{pluralize(count, 'grandchild').titleize}"
-            count = Person.where.overlap(kbns: person.third_generation).where("LENGTH(primary_kbn) = 3").uniq.count
+            count = Person.where.overlap(kbns: person.third_generation).where("LENGTH(primary_kbn) = #{((person.primary_kbn == '0')? 0 : person.primary_kbn.length) + 3}").uniq.count
             if count > 0
               person_text << "\n#{count} Great #{'grandchild'.pluralize(count)}"
-              count = Person.where.overlap(kbns: person.fourth_generation).where("LENGTH(primary_kbn) = 4").uniq.count
+              count = Person.where.overlap(kbns: person.fourth_generation).where("LENGTH(primary_kbn) = #{((person.primary_kbn == '0')? 0 : person.primary_kbn.length) + 4}").uniq.count
               if count > 0
                 person_text << "\n#{count} Great great #{'grandchild'.pluralize(count)}"
-                count = Person.where.overlap(kbns: person.fifth_generation).where("LENGTH(primary_kbn) = 5").uniq.count
+                count = Person.where.overlap(kbns: person.fifth_generation).where("LENGTH(primary_kbn) = #{((person.primary_kbn == '0')? 0 : person.primary_kbn.length) + 5}").uniq.count
                 if count > 0
                   person_text << "\n#{count} Great great great #{'grandchild'.pluralize(count)}"
-                  count = Person.where.overlap(kbns: person.sixth_generation).where("LENGTH(primary_kbn) = 6").uniq.count
+                  count = Person.where.overlap(kbns: person.sixth_generation).where("LENGTH(primary_kbn) = #{((person.primary_kbn == '0')? 0 : person.primary_kbn.length) + 6}").uniq.count
                   if count > 0
                     person_text << "\n#{count} Great great great great #{'grandchild'.pluralize(count)}"
-                    count = Person.where.overlap(kbns: person.seventh_generation).where("LENGTH(primary_kbn) = 7").uniq.count
+                    count = Person.where.overlap(kbns: person.seventh_generation).where("LENGTH(primary_kbn) = #{((person.primary_kbn == '0')? 0 : person.primary_kbn.length) + 7}").uniq.count
                     if count > 0
                       person_text << "\n#{count} Great great great great great #{'grandchild'.pluralize(count)}"
-                      count = Person.where.overlap(kbns: person.eighth_generation).where("LENGTH(primary_kbn) = 8").uniq.count
+                      count = Person.where.overlap(kbns: person.eighth_generation).where("LENGTH(primary_kbn) = #{((person.primary_kbn == '0')? 0 : person.primary_kbn.length) + 8}").uniq.count
                       if count > 0
                         person_text << "\n#{count} Great great great great great great #{'grandchild'.pluralize(count)}"
                       end
