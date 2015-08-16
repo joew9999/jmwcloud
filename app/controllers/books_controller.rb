@@ -195,13 +195,70 @@ class BooksController < AuthenticatedController
           unless partner.nil?
             child_count = relationship.children.count
             if child_count > 0
-              if person.relationships.count > 1
+              if person.primary_kbn == '812131'
+                text << "<b>Children of Robin Lynette Turner (812131), adopted by husband Terry Bryant:</b>\n\n"
+              elsif person.primary_kbn == '81332'
+                text << "<b>Children of Brenda 'Joy' Adair (81332), adopted by second husband Marshell Grabeal:</b>\n\n"
+              elsif person.primary_kbn == '9911'
+                text << "<b>Children of Patricia Joyce Loudermilk (9911) and first husband Jimmie Heard, adopted by her second husband Thomas Walthier:</b>\n\n"
+              elsif person.primary_kbn == '83511'
+                text << "<b>Children of Michael Perry Goff (83511) and first wife Maggie Jones, adopted and raised by grandmother Minnie Louise Leifeste Gentry (8351):</b>\n\n"
+              elsif person.primary_kbn == '5D21'
+                text << "<b>Children of Katherine Jean Leifeste (5D21) and first husband William Ray Lentz, adopted by her second husband Burlen Horton:</b>\n\n"
+              elsif person.primary_kbn == '5621'
+                text << "<b>Children of Shirley Beth Grote (5621) and first husband Neely Roy Kight, adopted by her second husband William Lewis Lyles:</b>\n\n"
+              elsif person.primary_kbn == '51111'
+                text << "<b>Children of Glenda Marie Muennink (51111) and first husband Robert Brenner, adopted by her second husband Robert 'Bob' Gifford:</b>\n\n"
+              elsif person.primary_kbn == '4833'
+              elsif person.primary_kbn == '48331'
+                text << "<b>Children of Cynthia Sue Follis Albert (48331) and first husband Sam Rager, adopted by Cynthia's parents Ruby Nell and Charlton Albert:</b>\n\n"
+              elsif person.primary_kbn == '4761'
+                text << "<b>Children of Wayne Dudley Woodress (4761) and first wife Bonnie Baker, adopted by his second wife Marylin Kay Salmon:</b>\n\n"
+              elsif person.primary_kbn == '4744'
+                text << "<b>Children of Merle Arleen Kothmann (4744) and first husband Brian Loren Mayott, adopted by her second husband Jerome Weaver:</b>\n\n"
+              elsif person.primary_kbn == '47121'
+                text << "<b>Children of Diane Loeffler (47121) and first husband Jammie Dwight Holland, adopted by her second husband David Whitworth:</b>\n\n"
+              elsif person.primary_kbn == '43284'
+                text << "<b>Children of Robin Kay Rusche (43284) and first husband Christopher Edward Monnier, adopted by her second husband Christopher Monnier:</b>\n\n"
+              elsif person.primary_kbn == '432211'
+                text << "<b>Children of Kathleen Gayle Coleman (432211) and first husband Rafeal Calvo Acofta, adopted by her second husband Leonard James Jared:</b>\n\n"
+              elsif person.primary_kbn == '42531'
+                text << "<b>Children of Linda Louise Lehmberg (42531) and first husband John Thomas 'Buster' Terrell, adopted by her second husband Michael Dean Lamkin:</b>\n\n"
+              elsif person.primary_kbn == '357121'
+                text << "<b>Children of Kara Rene Crouch (357121), adopted by her first husband Talor L. D. Hollingshead:</b>\n\n"
+              elsif person.primary_kbn == '353211'
+                text << "<b>Children of Kimberly Martin (353211) and first husband Jimmy Stiles, adopted by her second husband Harvey Metcalf:</b>\n\n"
+              elsif person.primary_kbn == '342111'
+                text << "<b>Children of Helen Frances Goode (342111) and first husband John Timothy Luton, adopted by her second husband Alexander Tong:</b>\n\n"
+              elsif person.primary_kbn == '3334'
+                text << "<b>Children of Lois Lorene Keller (3334) and first husband Roy Lester Tartt, adopted by her second husband Daryl Hansen:</b>\n\n"
+              elsif person.primary_kbn == '122112'
+                text << "<b>Children of Dawn Renay Osbourn (122112) and first husband Troy Saxbury, adopted by her second husband Brian Vance:</b>\n\n"
+              elsif person.relationships.count > 1
                 text << "<b>Children of #{person.name} (#{kbn}) and #{(index + 1).ordinalise} #{(person.male)? 'wife' : 'husband'} #{partner.name}:</b>\n\n"
               else
                 text << "<b>Children of #{person.name} (#{kbn}) and #{partner.name}:</b>\n\n"
               end
-              relationship.children.order("kbns ASC").each do |child|
-                text << print_person(child, kbn) + "\n"
+              if person.primary_kbn == '4A32'
+                relationship.children.order("kbns ASC").each_with_index do |child, index|
+                  if index == 1
+                    text << "<b>Children of Mary Anna Kothmann (4A32) and first husband Thomas Eugene Collier, adopted by grandfather Karl W. Kothmann:</b>\n\n"
+                  end
+                  text << print_person(child, kbn) + "\n"
+                end
+              elsif person.primary_kbn == '4833'
+                relationship.children.order("kbns ASC").each_with_index do |child, index|
+                  if index == 0
+                    text << "<b>Children of Ruby Nell Kothmann (4833) and first husband David Ray Follis, adopted by her second husband Bryce Farmer:</b>\n\n"
+                  elsif index == 1
+                    text << "<b>Children of Ruby Nell Kothmann (4833) and first husband David Ray Follis, adopted by her third husband Charlton Albert:</b>\n\n"
+                  end
+                  text << print_person(child, kbn) + "\n"
+                end
+              else
+                relationship.children.order("kbns ASC").each do |child|
+                  text << print_person(child, kbn) + "\n"
+                end
               end
             end
           end
@@ -287,10 +344,21 @@ class BooksController < AuthenticatedController
           born_text += "#{person.birth_place}"
         end
       end
-      if person.adopted_day.present?
-        adoption_text = "adopted #{person.adopted_day}"
-        if person.adoption_text.present?
-          adoption_text << ", #{person.adoption_text}"
+      if person.adoption_type.present?
+        adoption_type_initial = person.adoption_type[0,1]
+        if adoption_type_initial == 'C'
+        elsif adoption_type_initial == 'B'
+          if person.adopted_day.present?
+            adoption_text = "adopted #{person.adopted_day} by descendant"
+          else
+            adoption_text = "adopted, date unknown, by descendant"
+          end
+        elsif adoption_type_initial == 'A'
+          if person.adopted_day.present?
+            adoption_text = "adopted #{person.adopted_day}"
+          else
+            adoption_text = "adopted, date unknown"
+          end
         end
       end
       if person.death_day.present?
