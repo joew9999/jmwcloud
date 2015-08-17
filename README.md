@@ -31,6 +31,8 @@ This app is dedicated to the Kothmanns of Texas. Found at www.kothmannsoftexas.o
 
 7) Open in browser (localhost:3000)
 
+Seeded data gives you a login at `mike.hoffert@gmail.com` and `password`
+
 8) Import all people from CSV from FileMaker Pro at localhost:3000/people
 
 9) Import all people descendants count from FileMaker Pro at localhost:3000/people
