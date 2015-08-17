@@ -9,16 +9,34 @@
 %table
   %thead
     %tr
+      %th KBN
       %th First Name
       %th Last Name
+      %th First Generation
+      %th Second Generation
+      %th Third Generation
+      %th Fourth Generation
+      %th Fifth Generation
+      %th Sixth Generation
+      %th Seventh Generation
+      %th Eighth Generation
       %th Parent 1
       %th Parent 2
       %th Partners
       %th Children
     - @people.each do |person|
       %tr
+        %td= person.kbns
         %td= person.first_name
-        %td= person.last_name
+        %td= person.last_names.first
+        %td= person.first_generation.to_s
+        %td= person.second_generation.to_s
+        %td= person.third_generation.to_s
+        %td= person.fourth_generation.to_s
+        %td= person.fifth_generation.to_s
+        %td= person.sixth_generation.to_s
+        %td= person.seventh_generation.to_s
+        %td= person.eighth_generation.to_s
         %td
           - if person.parents.count > 0
             = person.parents.first.name

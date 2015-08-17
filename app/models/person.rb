@@ -1,14 +1,38 @@
 class Person < ActiveRecord::Base
   has_one :user
 
-  validates_uniqueness_of :kbn, allow_nil: true
-
   scope :no_gender, -> { where(male: nil) }
   scope :male, -> { where(male: true) }
   scope :female, -> { where(male: false) }
 
+  def self.find_by_kbn(kbn)
+    if kbn.nil?
+      return nil
+    else
+      return Person.where("kbns @> '{#{kbn}}'").first
+    end
+  end
+
+  def kbn_based_on_parent(parent_kbn)
+    kbn = self.kbns.first
+    if parent_kbn.present? && parent_kbn != '0'
+      self.kbns.each do |num|
+        kbn = num if parent_kbn == num[0..-2]
+      end
+    end
+    kbn
+  end
+
+  def kbn_based_on_last_kbn(last_kbn)
+    kbn = self.kbns.first
+    self.kbns.each do |num|
+      kbn = num if (last_kbn[0..-3]) == (num[0..-3])
+    end
+    kbn
+  end
+
   def name
-    "#{self.first_name} #{self.last_name}"
+    "#{self.first_name} #{self.last_names.first}#{(self.suffix.present?)? ', ' + self.suffix : ''}"
   end
 
   def relationships
@@ -39,40 +63,100 @@ class Person < ActiveRecord::Base
     Person.where(id: self.children_ids)
   end
 
-  def descendents
-    people = []
-    if self.kbn == '0'
-      people = Person.where("kbn IS NOT NULL").where("kbn != ''").where.not(id: self.id)
-    else
-      people = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where("kbn != ''").where.not(id: self.id)
+  def self.children(people)
+    children = []
+    people.each do |person|
+      children = children + Person.where(primary_kbn: person.first_generation).order(:primary_kbn)
     end
-    people
+    children
   end
 
-  def greatgrandchildren(generation)
-    people = []
-    char_count = self.kbn.size + generation
-    if self.kbn == '0'
-      people = Person.where("kbn IS NOT NULL").where.not(kbn: '0').where.not(kbn: '').where("LENGTH(kbn) = #{char_count - 1}")
-    else
-      people = Person.where("kbn LIKE '#{self.kbn}%'").where("kbn IS NOT NULL").where.not(kbn: '').where("LENGTH(kbn) = #{char_count}")
-    end
-    people
+  def descendants
+    descendant_kbns = []
+    descendant_kbns += self.first_generation
+    descendant_kbns += self.second_generation
+    descendant_kbns += self.third_generation
+    descendant_kbns += self.fourth_generation
+    descendant_kbns += self.fifth_generation
+    descendant_kbns += self.sixth_generation
+    descendant_kbns += self.seventh_generation
+    descendant_kbns += self.eighth_generation
+    Person.where.overlap(kbns: descendant_kbns).uniq.count
   end
 
   def self.import(csv)
-    people = []
+    first_time = (Person.all.count == 0)
     csv.each do |row|
-      people << self.import_row(row)
+      if row['first_name'].present?
+        if first_time
+          self.import_person(row, 0)
+        else
+          (1..8).to_a.each do |generation|
+            self.import_person(row, generation)
+          end
+        end
+      else
+        self.import_child(row)
+      end
     end
-    people
   end
 
-  def self.import_row(row)
-    person = Person.find_by_kbn(row['KBN'])
-    if person.nil?
-      person = Person.create({kbn: row['KBN'], first_name: row['first_name'], last_name: row['last_name'], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false), birth_day: row['birth_day'], birth_place: row['birth_place'], death_day: row['death_day'], death_place: row['death_place']})
-    elsif !row['relationship_number'].blank?
+  def update_parents_descendants(new_kbn, child_kbn, generation)
+    parent_kbn = (child_kbn.length > 1)? child_kbn[0..-2] : '0'
+    parent = Person.find_by_kbn(parent_kbn)
+    if generation == 1 && !parent.first_generation.include?(new_kbn)
+      parent.first_generation << new_kbn
+      parent.first_generation_will_change!
+    elsif generation == 2 && !parent.second_generation.include?(new_kbn)
+      parent.second_generation << new_kbn
+      parent.second_generation_will_change!
+    elsif generation == 3 && !parent.third_generation.include?(new_kbn)
+      parent.third_generation << new_kbn
+      parent.third_generation_will_change!
+    elsif generation == 4 && !parent.fourth_generation.include?(new_kbn)
+      parent.fourth_generation << new_kbn
+      parent.fourth_generation_will_change!
+    elsif generation == 5 && !parent.fifth_generation.include?(new_kbn)
+      parent.fifth_generation << new_kbn
+      parent.fifth_generation_will_change!
+    elsif generation == 6 && !parent.sixth_generation.include?(new_kbn)
+      parent.sixth_generation << new_kbn
+      parent.sixth_generation_will_change!
+    elsif generation == 7 && !parent.seventh_generation.include?(new_kbn)
+      parent.seventh_generation << new_kbn
+      parent.seventh_generation_will_change!
+    elsif generation == 8 && !parent.eighth_generation.include?(new_kbn)
+      parent.eighth_generation << new_kbn
+      parent.eighth_generation_will_change!
+    end
+    parent.save
+    parent.update_parents_descendants(new_kbn, parent_kbn, generation + 1) if parent_kbn != '0'
+  end
+
+  def self.import_person(row, generation)
+    if generation == 0 || row['KBN'].length == generation
+      person = Person.find_by_kbn(row['KBN'])
+      kbns = []
+      kbns << row['KBN'] if row['KBN'].present?
+      kbns << row['KBN1'] if row['KBN1'].present?
+      kbns << row['KBN2'] if row['KBN2'].present?
+      person_values = {primary_kbn: row['KBN'], kbns: kbns, first_name: row['first_name'], last_names: [row['last_name']], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false), birth_day: row['birth_day'], birth_place: row['birth_place'], death_day: row['death_day'], death_place: row['death_place'], adopted_day: row['adopted_day'], adoption_text: row['adoption_text'], adoption_type: row['adoption_type']}
+      if person.nil?
+        person = Person.create(person_values)
+      else
+        person.update_attributes(person_values)
+      end
+      if generation != 0
+        kbns.each do |kbn|
+          person.update_parents_descendants(kbn, kbn, 1)
+        end
+      end
+    end
+  end
+
+  def self.import_child(row)
+    if row['KBN'].present?
+      person = Person.find_by_kbn(row['KBN'])
       parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
       if !parent.nil?
         relationship = Relationship.find(parent.relationship_ids[(row['relationship_number'].to_i - 1)]) rescue nil
@@ -86,6 +170,14 @@ class Person < ActiveRecord::Base
         parent.save
       end
     end
-    person
+  end
+
+  def self.import_adoption(row)
+    if row['KBN'].present? && row['adoption_type'].present?
+      person = Person.find_by_kbn(row['KBN'])
+      if person.present?
+        person.update_attributes({})
+      end
+    end
   end
 end

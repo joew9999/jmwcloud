@@ -3,10 +3,12 @@ ruby "2.2.2"
 
 gem 'rails', '4.1.1'
 gem 'pg'
+gem 'postgres_ext'
 
 gem 'rest-client'
 
 gem 'prawn'
+gem 'pdf-reader'
 
 gem 'sass-rails', '~> 5.0.0'
 gem 'uglifier', '>= 1.3.0'

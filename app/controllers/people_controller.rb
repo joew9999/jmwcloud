@@ -4,7 +4,7 @@ class PeopleController < AuthenticatedController
   def index
     @page = params[:page].to_i
     @page = 1 if @page < 1 || @page.blank?
-    @people = Person.all.paginate(page: @page, per_page: 25)
+    @people = Person.order(:kbns).paginate(page: @page, per_page: 25)
   end
 
   def create
