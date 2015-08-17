@@ -10,18 +10,18 @@ This app is dedicated to the Kothmanns of Texas. Found at www.kothmannsoftexas.o
 
 1. Clone repo
 2. Install ruby 2.2.2
-```
-curl -sSL https://get.rvm.io
-rvm install ruby-2.2.2
-```
+  ```
+  curl -sSL https://get.rvm.io
+  rvm install ruby-2.2.2
+  ```
 3. Run `bundle install`
 4. Make sure PostgreSQL is up and running
 5. Initialize DB
-```
-rake db:create
-rake db:migrate
-rake db:seed
-```
+  ```
+  rake db:create
+  rake db:migrate
+  rake db:seed
+  ```
 6. Run `rails server`
 7. Open in browser (localhost:3000)
 8. Import all people from CSV from FileMaker Pro at localhost:3000/people
