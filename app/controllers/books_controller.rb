@@ -4,9 +4,44 @@ include ActionView::Helpers::TextHelper
 class BooksController < AuthenticatedController
   def create
     generate_pdfs
+    inspect_pdfs
+    generate_index
   end
 
   private
+
+  def generate_index
+  end
+
+  def inspect_pdfs
+    Person.where("primary_kbn IS NOT NULL").where.not(primary_kbn: '').order(:primary_kbn).each do |person|
+      person.pages = ''
+      (1..9).to_a.each do |generation|
+        reader = PDF::Reader.new("app/assets/exports/pdfs/family_registry#{generation}.pdf")
+        reader.pages.each_with_index do |page, index|
+          if !person.pages.include?(index)
+            person.pages << index + starting_page_number(generation) if page.text.include?("#{person.primary_kbn}     #{person.name}")
+            person.pages << index + starting_page_number(generation)if page.text.include?("#{person.name} (#{person.primary_kbn})")
+          end
+        end
+      end
+      person.pages_will_change!
+      person.save
+    end
+  end
+
+  def starting_page_number(generation)
+    page = 1
+    page += 4 if generation > 1
+    page += 4 if generation > 2
+    page += 8 if generation > 3
+    page += 20 if generation > 4
+    page += 38 if generation > 5
+    page += 58 if generation > 6
+    page += 66 if generation > 7
+    page += 38 if generation > 8
+    page
+  end
 
   def generate_pdfs
     pdf = Prawn::Document.new
@@ -90,7 +125,7 @@ class BooksController < AuthenticatedController
   end
 
   def generate_pdf(pdf, number)
-    pdf.number_pages "<page>", { at: [pdf.bounds.right - 50, 0], width: 50, align: :right, start_count_at: 1 }
+    pdf.number_pages "<page>", { at: [pdf.bounds.right - 50, 0], width: 50, align: :right, start_count_at: starting_page_number(number) }
 #       pdf.repeat :odd do
 #         pdf.bounding_box [pdf.bounds.left, pdf.bounds.bottom + 13], :width  => pdf.bounds.width do
 #           pdf.text "Left Odd Generation #"
