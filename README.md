@@ -14,20 +14,20 @@ This app is dedicated to the Kothmanns of Texas. Found at www.kothmannsoftexas.o
 curl -sSL https://get.rvm.io
 rvm install ruby-2.2.2
 ```
-2. Run `bundle install`
-3. Make sure PostgreSQL is up and running
-3. Initialize DB
+3. Run `bundle install`
+4. Make sure PostgreSQL is up and running
+5. Initialize DB
 ```
 rake db:create
 rake db:migrate
 rake db:seed
 ```
-4. rails server
-5. Open in browser (localhost:3000)
-6. Import all people from CSV from FileMaker Pro at localhost:3000/people
-7. Import all people descendants count from FileMaker Pro at localhost:3000/people
-8. Import all relationships from FileMaker Pro at localhost:3000/relationships
-9. Import all children from FileMaker Pro at localhost:3000/people
-10. Export to PDF from FileMaker Pro at localhost:3000/books
+6. Run `rails server`
+7. Open in browser (localhost:3000)
+8. Import all people from CSV from FileMaker Pro at localhost:3000/people
+9. Import all people descendants count from FileMaker Pro at localhost:3000/people
+10. Import all relationships from FileMaker Pro at localhost:3000/relationships
+11. Import all children from FileMaker Pro at localhost:3000/people
+12. Export to PDF from FileMaker Pro at localhost:3000/books
 
 Please feel free to help with suggestions or pull requests.
