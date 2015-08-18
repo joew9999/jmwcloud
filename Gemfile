@@ -69,6 +69,7 @@ group :test do
   gem 'resque_spec'
   gem 'guard-rspec', :require => false
   gem 'mocha'
+  gem 'rubocop', '0.32.1', :require => false
 end
 
 group :development do
