@@ -6,11 +6,11 @@ class Person < ActiveRecord::Base
   scope :female, -> { where(:male => false) }
 
   def self.find_by_kbn(kbn)
-    if kbn.nil?
-      return nil
-    else
-      return Person.find_by("kbns @> '{#{kbn}}'")
+    if kbn.present?
+      person = Person.find_by(:primary_kbn => kbn)
+      person = Person.where.overlap(:kbns => [kbn]).first if person.nil?
     end
+    person
   end
 
   def kbn_based_on_parent(parent_kbn)

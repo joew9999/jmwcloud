@@ -13,7 +13,7 @@ describe Relationship do
     end
 
     it 'should make relationships' do
-      Relationship.all.count.should == 85
+      Relationship.all.count.should == 80
     end
   end
 end
