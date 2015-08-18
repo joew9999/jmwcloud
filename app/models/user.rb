@@ -7,5 +7,5 @@ class User < ActiveRecord::Base
 
   belongs_to :person
 
-  validate :email, presence: true, uniqueness: true
+  validate :email, :presence => true, :uniqueness => true
 end

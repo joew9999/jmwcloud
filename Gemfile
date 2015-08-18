@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.2.2"
+ruby '2.2.2'
 
 gem 'rails', '4.1.1'
 gem 'pg'
@@ -57,7 +57,7 @@ group :test do
   gem 'rspec-rails'
   gem 'fabrication'
   gem 'shoulda'
-  gem 'simplecov', '~> 0.7.1', require: false
+  gem 'simplecov', '~> 0.7.1', :require => false
   gem 'cucumber', :require => false
   gem 'cucumber-rails', :require => false
   gem 'selenium-webdriver'
@@ -67,7 +67,7 @@ group :test do
   gem 'awesome_print'
   gem 'email_spec'
   gem 'resque_spec'
-  gem 'guard-rspec', require: false
+  gem 'guard-rspec', :require => false
   gem 'mocha'
 end
 

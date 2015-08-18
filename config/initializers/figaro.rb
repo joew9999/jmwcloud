@@ -1,1 +1,15 @@
-Figaro.require_keys("APP_SECRET", "DATABASE_ADAPTER", "DATABASE_ENCODING", "DATABASE_PRODUCTION", "DATABASE_TEST", "DATABASE_POOL", "DATABASE_HOST", "DATABASE_USERNAME", "DATABASE_PASSWORD", "MAILGUN_SMTP_PORT", "MAILGUN_SMTP_SERVER", "MAILGUN_SMTP_LOGIN", "MAILGUN_SMTP_PASSWORD", "MAILGUN_HOST", "SITE_DOMAIN")
+Figaro.require_keys('APP_SECRET',
+                    'DATABASE_ADAPTER',
+                    'DATABASE_ENCODING',
+                    'DATABASE_PRODUCTION',
+                    'DATABASE_TEST',
+                    'DATABASE_POOL',
+                    'DATABASE_HOST',
+                    'DATABASE_USERNAME',
+                    'DATABASE_PASSWORD',
+                    'MAILGUN_SMTP_PORT',
+                    'MAILGUN_SMTP_SERVER',
+                    'MAILGUN_SMTP_LOGIN',
+                    'MAILGUN_SMTP_PASSWORD',
+                    'MAILGUN_HOST',
+                    'SITE_DOMAIN')

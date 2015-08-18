@@ -4,7 +4,8 @@ class ImagesController < AuthenticatedController
   end
 
   private
-    def image_params
-      params.require(:image).permit(:image, :type)
-    end
+
+  def image_params
+    params.require(:image).permit(:image, :type)
+  end
 end

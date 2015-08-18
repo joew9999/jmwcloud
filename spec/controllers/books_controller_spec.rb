@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe BooksController, type: :controller do
+describe BooksController, :type => :controller do
 end

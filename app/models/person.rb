@@ -1,22 +1,22 @@
 class Person < ActiveRecord::Base
   has_one :user
 
-  scope :no_gender, -> { where(male: nil) }
-  scope :male, -> { where(male: true) }
-  scope :female, -> { where(male: false) }
+  scope :no_gender, -> { where(:male => nil) }
+  scope :male, -> { where(:male => true) }
+  scope :female, -> { where(:male => false) }
 
   def self.find_by_kbn(kbn)
     if kbn.nil?
       return nil
     else
-      return Person.where("kbns @> '{#{kbn}}'").first
+      return Person.find_by("kbns @> '{#{kbn}}'")
     end
   end
 
   def kbn_based_on_parent(parent_kbn)
-    kbn = self.kbns.first
+    kbn = kbns.first
     if parent_kbn.present? && parent_kbn != '0'
-      self.kbns.each do |num|
+      kbns.each do |num|
         kbn = num if parent_kbn == num[0..-2]
       end
     end
@@ -24,25 +24,25 @@ class Person < ActiveRecord::Base
   end
 
   def kbn_based_on_last_kbn(last_kbn)
-    kbn = self.kbns.first
-    self.kbns.each do |num|
+    kbn = kbns.first
+    kbns.each do |num|
       kbn = num if (last_kbn[0..-3]) == (num[0..-3])
     end
     kbn
   end
 
   def name
-    "#{self.first_name} #{self.last_names.first}#{(self.suffix.present?)? ', ' + self.suffix : ''}"
+    "#{first_name} #{last_names.first}#{(suffix.present?) ? ', ' + suffix : ''}"
   end
 
   def relationships
-    Relationship.where(id: self.relationship_ids)
+    Relationship.where(:id => relationship_ids)
   end
 
   def parents
     parents = []
-    Relationship.where("'#{self.id}' = ANY (children_ids)").each do |relationship|
-      Person.where(id: relationship.partner_ids).each do |parent|
+    Relationship.where("'#{id}' = ANY (children_ids)").find_each do |relationship|
+      Person.where(:id => relationship.partner_ids).find_each do |parent|
         parents << parent
       end
     end
@@ -51,8 +51,8 @@ class Person < ActiveRecord::Base
 
   def partners
     partners = []
-    Relationship.where("'#{self.id}' = ANY (partner_ids)").each do |relationship|
-      Person.where(id: relationship.partner_ids).where.not(id: self.id).each do |partner|
+    Relationship.where("'#{id}' = ANY (partner_ids)").find_each do |relationship|
+      Person.where(:id => relationship.partner_ids).where.not(:id => id).each do |partner|
         partners << partner
       end
     end
@@ -60,28 +60,28 @@ class Person < ActiveRecord::Base
   end
 
   def children
-    Person.where(id: self.children_ids)
+    Person.where(:id => children_ids)
   end
 
   def self.children(people)
     children = []
     people.each do |person|
-      children = children + Person.where(primary_kbn: person.first_generation).order(:primary_kbn)
+      children += Person.where(:primary_kbn => person.first_generation).order(:primary_kbn)
     end
     children
   end
 
   def descendants
     descendant_kbns = []
-    descendant_kbns += self.first_generation
-    descendant_kbns += self.second_generation
-    descendant_kbns += self.third_generation
-    descendant_kbns += self.fourth_generation
-    descendant_kbns += self.fifth_generation
-    descendant_kbns += self.sixth_generation
-    descendant_kbns += self.seventh_generation
-    descendant_kbns += self.eighth_generation
-    Person.where.overlap(kbns: descendant_kbns).uniq.count
+    descendant_kbns += first_generation
+    descendant_kbns += second_generation
+    descendant_kbns += third_generation
+    descendant_kbns += fourth_generation
+    descendant_kbns += fifth_generation
+    descendant_kbns += sixth_generation
+    descendant_kbns += seventh_generation
+    descendant_kbns += eighth_generation
+    Person.where.overlap(:kbns => descendant_kbns).uniq.count
   end
 
   def self.import(csv)
@@ -89,20 +89,20 @@ class Person < ActiveRecord::Base
     csv.each do |row|
       if row['first_name'].present?
         if first_time
-          self.import_person(row, 0)
+          import_person(row, 0)
         else
           (1..8).to_a.each do |generation|
-            self.import_person(row, generation)
+            import_person(row, generation)
           end
         end
       else
-        self.import_child(row)
+        import_child(row)
       end
     end
   end
 
   def update_parents_descendants(new_kbn, child_kbn, generation)
-    parent_kbn = (child_kbn.length > 1)? child_kbn[0..-2] : '0'
+    parent_kbn = (child_kbn.length > 1) ? child_kbn[0..-2] : '0'
     parent = Person.find_by_kbn(parent_kbn)
     if generation == 1 && !parent.first_generation.include?(new_kbn)
       parent.first_generation << new_kbn
@@ -140,7 +140,23 @@ class Person < ActiveRecord::Base
       kbns << row['KBN'] if row['KBN'].present?
       kbns << row['KBN1'] if row['KBN1'].present?
       kbns << row['KBN2'] if row['KBN2'].present?
-      person_values = {primary_kbn: row['KBN'], kbns: kbns, first_name: row['first_name'], last_names: [row['last_name']], male: (row['gender'].blank?)? nil : ((row['gender'] == 'M')? true : false), birth_day: row['birth_day'], birth_place: row['birth_place'], death_day: row['death_day'], death_place: row['death_place'], adopted_day: row['adopted_day'], adoption_text: row['adoption_text'], adoption_type: row['adoption_type']}
+      if row['gender'] == 'M'
+        gender = true
+      elsif row['gender'].present?
+        gender = false
+      end
+      person_values = { :primary_kbn   => row['KBN'],
+                        :kbns          => kbns,
+                        :first_name    => row['first_name'],
+                        :last_names    => [row['last_name']],
+                        :male          => gender,
+                        :birth_day     => row['birth_day'],
+                        :birth_place   => row['birth_place'],
+                        :death_day     => row['death_day'],
+                        :death_place   => row['death_place'],
+                        :adopted_day   => row['adopted_day'],
+                        :adoption_text => row['adoption_text'],
+                        :adoption_type => row['adoption_type'] }
       if person.nil?
         person = Person.create(person_values)
       else
@@ -157,10 +173,10 @@ class Person < ActiveRecord::Base
   def self.import_child(row)
     if row['KBN'].present?
       person = Person.find_by_kbn(row['KBN'])
-      parent = (row['parent_id'].blank?)? Person.find(1) : Person.find_by_kbn(row['parent_id'])
-      if !parent.nil?
-        relationship = Relationship.find(parent.relationship_ids[(row['relationship_number'].to_i - 1)]) rescue nil
-        if !relationship.nil?
+      parent = (row['parent_id'].blank?) ? Person.find(1) : Person.find_by_kbn(row['parent_id'])
+      unless parent.nil?
+        relationship = Relationship.find_by(:id => parent.relationship_ids[(row['relationship_number'].to_i - 1)])
+        if relationship.present?
           relationship.children_ids << person.id
           relationship.children_ids_will_change!
           relationship.save
@@ -175,9 +191,7 @@ class Person < ActiveRecord::Base
   def self.import_adoption(row)
     if row['KBN'].present? && row['adoption_type'].present?
       person = Person.find_by_kbn(row['KBN'])
-      if person.present?
-        person.update_attributes({})
-      end
+      person.update_attributes({}) if person.present?
     end
   end
 end

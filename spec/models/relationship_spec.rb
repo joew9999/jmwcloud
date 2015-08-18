@@ -8,11 +8,11 @@ describe Relationship do
     let(:csv) { CSV.parse(csv_text, :headers => true) }
 
     before(:each) do
-      Person::import(people_csv)
-      Relationship::import(csv)
+      Person.import(people_csv)
+      Relationship.import(csv)
     end
 
-    it "should make relationships" do
+    it 'should make relationships' do
       Relationship.all.count.should == 85
     end
   end
