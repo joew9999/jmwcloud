@@ -44,7 +44,7 @@ describe PeopleController, type: :controller do
 
       it "should create people" do
         post :create, person: {first_name: 'test'}, import: 'import', file: fixture_file_upload('files/people_good.csv', 'text/csv')
-        Person.all.count.should == 100
+        Person.all.count.should == 4311
       end
     end
   end

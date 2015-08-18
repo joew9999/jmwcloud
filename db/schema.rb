@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150815221231) do
     t.text     "relationship_ids",   default: [],    array: true
     t.text     "children_ids",       default: [],    array: true
     t.string   "pages",              default: [],    array: true
+    t.string   "other_names",        default: [],    array: true
     t.string   "last_names",         default: [],    array: true
     t.string   "kbns",               default: [],    array: true
     t.string   "first_generation",   default: [],    array: true
@@ -59,6 +60,7 @@ ActiveRecord::Schema.define(version: 20150815221231) do
   add_index "people", ["kbns"], name: "index_people_on_kbns", using: :btree
   add_index "people", ["last_names"], name: "index_people_on_last_names", using: :btree
   add_index "people", ["male"], name: "index_people_on_male", using: :btree
+  add_index "people", ["other_names"], name: "index_people_on_other_names", using: :btree
   add_index "people", ["primary_kbn"], name: "index_people_on_primary_kbn", using: :btree
 
   create_table "relationships", force: true do |t|

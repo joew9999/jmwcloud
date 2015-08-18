@@ -3,7 +3,6 @@ class Arrays < ActiveRecord::Migration
     remove_column :people, :last_name
     remove_column :people, :kbn
 
-    add_column :people, :pages, :string, array: true, default: []
     add_column :people, :last_names, :string, array: true, default: []
     add_column :people, :kbns, :string, array: true, default: []
     add_column :people, :first_generation, :string, array: true, default: []
