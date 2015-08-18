@@ -35,11 +35,19 @@ This app is dedicated to the Kothmanns of Texas. Found at www.kothmannsoftexas.o
 
 8) Import all people from CSV from FileMaker Pro at localhost:3000/people
 
+[Download CSV Here](all.csv)
+
 9) Import all people descendants count from FileMaker Pro at localhost:3000/people
+
+[Download CSV Here](all.csv)
 
 10) Import all relationships from FileMaker Pro at localhost:3000/relationships
 
+[Download CSV Here](relationships.csv)
+
 11) Import all children from FileMaker Pro at localhost:3000/people
+
+[Download CSV Here](children.csv)
 
 12) Export to PDF from FileMaker Pro at localhost:3000/books
 
