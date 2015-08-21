@@ -3,9 +3,12 @@ include ActionView::Helpers::TextHelper
 
 class BooksController < AuthenticatedController
   def create
-    generate_pdfs
-    inspect_pdfs
-    generate_index
+    if Person.all.count > 0
+      generate_pdfs
+      inspect_pdfs
+      generate_index
+    end
+    redirect_to books_path
   end
 
   private
