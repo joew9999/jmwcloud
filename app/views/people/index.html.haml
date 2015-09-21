@@ -20,6 +20,7 @@
       %th Sixth Generation
       %th Seventh Generation
       %th Eighth Generation
+      %th Ninth Generation
       %th Parent 1
       %th Parent 2
       %th Partners
@@ -37,6 +38,7 @@
         %td= person.sixth_generation.to_s
         %td= person.seventh_generation.to_s
         %td= person.eighth_generation.to_s
+        %td= person.ninth_generation.to_s
         %td
           - if person.parents.count > 0
             = person.parents.first.name

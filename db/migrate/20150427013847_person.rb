@@ -11,6 +11,7 @@ class Person < ActiveRecord::Migration
       t.datetime :death_date
       t.integer :death_place_id
 
+
       t.timestamps
     end
 

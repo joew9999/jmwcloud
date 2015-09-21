@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.2.2'
 
-gem 'rails', '4.1.1'
+gem 'rails', '4.1.13rc1'
 gem 'pg'
 gem 'postgres_ext'
 
@@ -46,6 +46,8 @@ gem 'ordinalize'
 
 gem 'figaro'
 gem 'launchy'
+
+gem 'prawn-manual_builder'
 
 group :production do
   gem 'rails_12factor'

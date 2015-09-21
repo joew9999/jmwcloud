@@ -20,6 +20,7 @@ class Relationships < ActiveRecord::Migration
       t.integer :relationship_id
       t.integer :event_id
       t.integer :order
+   
 
       t.timestamps
     end

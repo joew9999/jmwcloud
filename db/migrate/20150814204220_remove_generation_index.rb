@@ -8,5 +8,6 @@ class RemoveGenerationIndex < ActiveRecord::Migration
     remove_index :people, :sixth_generation
     remove_index :people, :seventh_generation
     remove_index :people, :eighth_generation
+    remove_index :people, :ninth_generation
   end
 end

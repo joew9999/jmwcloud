@@ -16,5 +16,9 @@ class RemoveEvents < ActiveRecord::Migration
 
     add_column :relationships, :marriage_day, :string
     add_column :relationships, :divorce_day, :string
+#added 9/16
+    # add_column :relationships, :s_suffix, :string
+    # add_column :relationships, :death_mark, :string
+    # add_column :relationships, :other_names, :string
   end
 end

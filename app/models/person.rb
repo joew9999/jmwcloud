@@ -81,6 +81,7 @@ class Person < ActiveRecord::Base
     descendant_kbns += sixth_generation
     descendant_kbns += seventh_generation
     descendant_kbns += eighth_generation
+    descendant_kbns += ninth_generation
     Person.where.overlap(:kbns => descendant_kbns).uniq.count
   end
 
@@ -105,8 +106,10 @@ class Person < ActiveRecord::Base
     parent_kbn = (child_kbn.length > 1) ? child_kbn[0..-2] : '0'
     parent = Person.find_by_kbn(parent_kbn)
     if generation == 1 && !parent.first_generation.include?(new_kbn)
+       if new_kbn != "0"   
       parent.first_generation << new_kbn
       parent.first_generation_will_change!
+       end 
     elsif generation == 2 && !parent.second_generation.include?(new_kbn)
       parent.second_generation << new_kbn
       parent.second_generation_will_change!
@@ -114,7 +117,7 @@ class Person < ActiveRecord::Base
       parent.third_generation << new_kbn
       parent.third_generation_will_change!
     elsif generation == 4 && !parent.fourth_generation.include?(new_kbn)
-      parent.fourth_generation << new_kbn
+      parent.fourth_generation << new_kbn 
       parent.fourth_generation_will_change!
     elsif generation == 5 && !parent.fifth_generation.include?(new_kbn)
       parent.fifth_generation << new_kbn
@@ -128,6 +131,9 @@ class Person < ActiveRecord::Base
     elsif generation == 8 && !parent.eighth_generation.include?(new_kbn)
       parent.eighth_generation << new_kbn
       parent.eighth_generation_will_change!
+    elsif generation == 9 && !parent.ninth_generation.include?(new_kbn)
+      parent.ninth_generation << new_kbn
+      parent.ninth_generation_will_change!
     end
     parent.save
     parent.update_parents_descendants(new_kbn, parent_kbn, generation + 1) if parent_kbn != '0'
@@ -154,9 +160,11 @@ class Person < ActiveRecord::Base
                         :birth_place   => row['birth_place'],
                         :death_day     => row['death_day'],
                         :death_place   => row['death_place'],
+                        :suffix        => row['suffix'],
                         :adopted_day   => row['adopted_day'],
                         :adoption_text => row['adoption_text'],
-                        :adoption_type => row['adoption_type'] }
+                        :adoption_type => row['adoption_type'],
+                        :twin          => row['twin']}
       if person.nil?
         person = Person.create(person_values)
       else
